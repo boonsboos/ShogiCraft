@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://papermc.io/repo/repository/maven-public/" }
+    maven { url = "https://repo.aikar.co/content/groups/aikar/" }
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT"
+    compileOnly "io.github.magiccheese1:custommodelapi:1.0"
+    compileOnly "co.aikar:acf-paper:0.5.0-SNAPSHOT"
+}
+
+shadowJar {
+    version '1.0'
+    archiveBaseName.set('ShogiCraft')
+}
