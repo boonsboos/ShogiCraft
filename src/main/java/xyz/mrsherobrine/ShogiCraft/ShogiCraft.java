@@ -1,16 +1,17 @@
 package xyz.mrsherobrine.ShogiCraft;
 
-import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.mrsherobrine.ShogiCraft.shogi.Board;
+import xyz.mrsherobrine.ShogiCraft.commands.CommandHandler;
+import xyz.mrsherobrine.ShogiCraft.listeners.Test;
 
 public class ShogiCraft extends JavaPlugin {
 
     @Override
     public void onEnable() {
 
-        new Board(0, 0, 20, 20, Bukkit.getPlayer("Mrs_Herobrine_").getUniqueId()).createNewBoard(this);
-
+        getServer().getPluginManager().registerEvents(new Test(this) ,this);
+        getCommand("shogi").setExecutor(new CommandHandler(this));
     }
 
 }

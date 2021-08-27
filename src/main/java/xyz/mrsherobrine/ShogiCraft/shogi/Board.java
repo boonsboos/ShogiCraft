@@ -14,11 +14,11 @@ public class Board {
     private int upperZ;
     private UUID owner;
 
-    public Board(int lowerX, int lowerZ, int upperX, int upperZ, UUID owner) {
-        this.lowerX = lowerX;
-        this.lowerZ = lowerZ;
-        this.upperX = upperX;
-        this.upperZ = upperZ;
+    public Board(int[] coords, UUID owner) {
+        this.lowerX = coords[0];
+        this.lowerZ = coords[1];
+        this.upperX = coords[2];
+        this.upperZ = coords[3];
         this.owner = owner;
     }
 
@@ -58,9 +58,8 @@ public class Board {
 
     public void createNewBoard(JavaPlugin plugin) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, ()-> {
-            plugin.getLogger().info("Board with parameters: "+ Arrays.toString(getBounds()));
+            plugin.getLogger().info("Created new Board with parameters: "+ Arrays.toString(getBounds())+owner.toString());
             //TODO: insert stuff into db
-
         });
     }
 }

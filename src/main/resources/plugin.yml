@@ -1,0 +1,21 @@
+main: 'xyz.mrsherobrine.ShogiCraft.ShogiCraft'
+name: 'ShogiCraft'
+version: '1.0'
+api-version: '1.17'
+commands:
+  shogi:
+    description: 'Main command that handles everything'
+    permission: 'ShogiCraft.shogi'
+    usage: |
+      /shogi create
+      /shogi remove
+      /shogi search
+      /shogi challenge <player>
+      /shogi challenge <accept|deny>
+      /shogi surrender
+      /shogi rematch <player>
+      /shogi rematch <accept|deny>
+permissions:
+  ShogiFraft.shogi:
+    description: 'Main permission'
+    default: not op
