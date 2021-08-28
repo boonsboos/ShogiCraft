@@ -49,7 +49,7 @@ public class LocationChecker {
                 if (location.getZ()-corner.getZ() < 8) {
                     location.setZ(location.getZ() + 1);
                     blockCounter++;
-                } else /*if (blockCounter % 9 == 0 && blockCounter > 0)*/ {
+                } else {
                     location.setX(location.getX()+1);
                     location.setZ(corner.getZ());
                     blockCounter++;

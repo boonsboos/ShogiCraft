@@ -20,11 +20,13 @@ public class CommandHandler implements CommandExecutor {
     public Logger logger;
 
     public LocationChecker locCheck;
+    public Board board;
 
     public CommandHandler(JavaPlugin plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
         this.locCheck = new LocationChecker(logger);
+        this.board = new Board();
     }
 
     @Override
@@ -38,13 +40,10 @@ public class CommandHandler implements CommandExecutor {
                 switch (strings[0]) {
                     case "create":
                         if (locCheck.checkLocation(player.getLocation())) {
-                            new Board(
-                                    locCheck.getBounds(),
-                                    player.getUniqueId()
-                            ).createNewBoard(plugin);
+                            board.createNewBoard(plugin, locCheck.getBounds(), player.getUniqueId(), player.getLocation());
                             player.sendMessage("New board has been created at "+Arrays.toString(locCheck.getBounds()));
                         } else {
-                            player.sendMessage("Invalid location! Please check if it's all wood and 9x9.");
+                            player.sendMessage("Invalid location! Please check if it's all planks and 9x9.");
                         }
                         break;
                     case "remove":
