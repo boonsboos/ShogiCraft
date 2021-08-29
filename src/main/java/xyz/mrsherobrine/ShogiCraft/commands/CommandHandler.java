@@ -19,11 +19,11 @@ import java.util.logging.Logger;
 
 public class CommandHandler implements CommandExecutor {
 
-    public JavaPlugin plugin;
-    public Logger logger;
+    private JavaPlugin plugin;
+    private Logger logger;
 
-    public LocationChecker locCheck;
-    public List<Square[][]> boardList = new ArrayList<>();
+    private LocationChecker locCheck;
+    private List<Square[][]> boardList = new ArrayList<>();
 
     public CommandHandler(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -44,8 +44,23 @@ public class CommandHandler implements CommandExecutor {
                         if (locCheck.checkLocation(player.getLocation())) {
                             boardList.add(new Board().createNewBoard(plugin, locCheck.getBounds(), player.getUniqueId(), player.getLocation()));
                             player.sendMessage("New board has been created at "+Arrays.toString(locCheck.getBounds()));
-                            logger.info("lol have fun reading this:\n"+Arrays.deepToString(boardList.get(0)));
-                            // i am hilarious
+
+                            logger.info("lol have fun reading this:");
+
+                            //cursed code with naomi part 1
+                            for (Square[] sqarray : boardList.get(0)) {
+                                logger.info("array");
+                                for (Square square : sqarray) {
+                                    try {
+                                        logger.info(""+square.getLocation().toString());
+                                    } catch (NullPointerException e) {
+                                        logger.info("null!");
+                                    }
+                                }
+                            }
+                            //doesn't work as it should btw
+
+
                         } else {
                             player.sendMessage("Invalid location! Please check if it's all planks and 9x9.");
                         }

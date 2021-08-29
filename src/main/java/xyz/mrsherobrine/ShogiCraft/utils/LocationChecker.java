@@ -9,15 +9,12 @@ import java.util.logging.Logger;
 
 public class LocationChecker {
 
-    public Logger logger;
-    public LocationChecker(Logger logger) {
-        this.logger = logger;
-    }
+    private Logger logger;
 
-    public Location corner;
-    public Location location;
+    private Location corner;
+    private Location location;
 
-    public List<Material> woods = Arrays.asList(
+    private List<Material> woods = Arrays.asList(
 
             Material.ACACIA_PLANKS,
             Material.BIRCH_PLANKS,
@@ -30,6 +27,9 @@ public class LocationChecker {
 
     );
 
+    public LocationChecker(Logger logger) {
+        this.logger = logger;
+    }
 
     public boolean checkLocation(Location location) {
 
