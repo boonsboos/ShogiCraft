@@ -4,7 +4,7 @@ import org.bukkit.Location;
 
 public class Square {
 
-    private Location location;
+    private final Location location;
     private Piece piece;
 
     public Square(Location location) {
@@ -17,10 +17,6 @@ public class Square {
 
     public Location getLocation() {
         return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public void setPiece(Piece piece) {

@@ -24,20 +24,18 @@ public class Board {
         location.setY((double)(int)location.getY()-1.0);
         Location corner = new Location(location.getWorld(), location.getBlockX(),location.getY(), location.getBlockZ());
 
-        for (int x = 0; x <9; x++) {
-
+        for (int x = 0; x < 9; x++) {
             for (int y = 0; y < 9; y++) {
-
-                board[y][x] = new Square(location);
+                board[y][x] = new Square(location.clone());
                 location.setZ(location.getZ()+1);
-
             }
-
+            //shift to the next row
             location.setX(location.getX()+1.0);
+            //reset Z so it doesn't continue past 9
             location.setZ(corner.getZ());
-
         }
-
+        plugin.getLogger().info("0,0 has coordinates: "+board[0][0].getLocation().toString());
+        plugin.getLogger().info("8,8 has coordinates: "+board[8][8].getLocation().toString());
         return board;
     }
 

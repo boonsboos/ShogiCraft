@@ -13,9 +13,7 @@ import xyz.mrsherobrine.ShogiCraft.shogi.Game;
 import xyz.mrsherobrine.ShogiCraft.shogi.Square;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class CommandHandler implements CommandExecutor {
@@ -24,7 +22,7 @@ public class CommandHandler implements CommandExecutor {
     private Logger logger;
 
     private LocationChecker locCheck;
-    private List<Square[][]> boardList = new ArrayList<>();
+    private Map<UUID, Square[][]> boardList = new HashMap<>();
 
     private Game game;
 
@@ -46,25 +44,8 @@ public class CommandHandler implements CommandExecutor {
                 switch (strings[0]) {
                     case "create":
                         if (locCheck.checkLocation(player.getLocation())) {
-                            boardList.add(new Board().createNewBoard(plugin, locCheck.getBounds(), player.getUniqueId(), player.getLocation()));
+                            boardList.put(player.getUniqueId(), new Board().createNewBoard(plugin, locCheck.getBounds(), player.getUniqueId(), player.getLocation()));
                             player.sendMessage("New board has been created at "+Arrays.toString(locCheck.getBounds()));
-
-                            logger.info("lol have fun reading this:");
-
-                            //cursed code with naomi part 1
-                            for (Square[] sqarray : boardList.get(0)) {
-                                logger.info("array");
-                                for (Square square : sqarray) {
-                                    try {
-                                        logger.info(""+square.getLocation().toString());
-                                    } catch (NullPointerException e) {
-                                        logger.info("null!");
-                                    }
-                                }
-                            }
-                            //doesn't work as it should btw
-
-
                         } else {
                             player.sendMessage("Invalid location! Please check if it's all planks and 9x9.");
                         }
@@ -73,7 +54,8 @@ public class CommandHandler implements CommandExecutor {
                         commandSender.sendMessage("not implemented yet lol");
                         break;
                     case "play":
-                        game.setupGame(boardList.get(0));
+                        game.setupGame(boardList.get(player.getUniqueId()));
+                        break;
                     default:
                         commandSender.sendMessage(Component.text("Hmm, that doesn't look like a known command to me...", NamedTextColor.RED));
                         return false;
