@@ -15,7 +15,6 @@ public class Pawn extends Piece {
 
     public boolean canMove(Location oldLoc, Location newLoc, BlockFace facing) {
 
-
         return true;
     }
 }

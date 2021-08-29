@@ -24,36 +24,11 @@ public class Board {
         location.setY((double)(int)location.getY()-1.0);
         Location corner = new Location(location.getWorld(), location.getBlockX(),location.getY(), location.getBlockZ());
 
-        //int blockCounter = 0;
-        //int blockX = 0;
-        //int blockY = 0;
-
-        //same code as in utils.LocationChecker, but modified to work for the board instead
-        /*board[blockY][blockX] = new Square(location);
-        plugin.getLogger().info("coord: "+board[blockY][blockX].getLocation());
-        while (blockCounter <80) {
-            if (location.getZ()-corner.getZ() < 8 && blockY<8) {
-                blockY++;
-                location.setZ(location.getZ() + 1);
-                board[blockY][blockX] = new Square(location);
-                plugin.getLogger().info("coord: "+board[blockY][blockX].getLocation());
-                blockCounter++;
-            } else {
-                location.setX(location.getX()+1);
-                location.setZ(corner.getZ());
-                board[blockY][blockX] = new Square(location);
-                plugin.getLogger().info("coord: "+board[blockY][blockX].getLocation());
-                blockX++;
-                blockY=0;
-                blockCounter++;
-            }
-        }*/
         for (int x = 0; x <9; x++) {
 
             for (int y = 0; y < 9; y++) {
 
                 board[y][x] = new Square(location);
-                plugin.getLogger().info("coord: "+board[y][x].getLocation());
                 location.setZ(location.getZ()+1);
 
             }
@@ -63,7 +38,6 @@ public class Board {
 
         }
 
-        //TODO: insert stuff into db
         return board;
     }
 

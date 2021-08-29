@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.mrsherobrine.ShogiCraft.shogi.Board;
+import xyz.mrsherobrine.ShogiCraft.shogi.Game;
 import xyz.mrsherobrine.ShogiCraft.shogi.Square;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
@@ -25,10 +26,13 @@ public class CommandHandler implements CommandExecutor {
     private LocationChecker locCheck;
     private List<Square[][]> boardList = new ArrayList<>();
 
+    private Game game;
+
     public CommandHandler(JavaPlugin plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
         this.locCheck = new LocationChecker(logger);
+        this.game = new Game();
     }
 
     @Override
@@ -68,6 +72,8 @@ public class CommandHandler implements CommandExecutor {
                     case "remove":
                         commandSender.sendMessage("not implemented yet lol");
                         break;
+                    case "play":
+                        game.setupGame(boardList.get(0));
                     default:
                         commandSender.sendMessage(Component.text("Hmm, that doesn't look like a known command to me...", NamedTextColor.RED));
                         return false;

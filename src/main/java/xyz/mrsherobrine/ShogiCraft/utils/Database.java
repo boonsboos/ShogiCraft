@@ -1,2 +1,4 @@
-package xyz.mrsherobrine.ShogiCraft.utils;public class Database {
+package xyz.mrsherobrine.ShogiCraft.utils;
+
+public class Database {
 }
