@@ -41,7 +41,7 @@ public class LocationChecker {
 
         boolean isValid = true;
         corner = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
-        int blockCounter = 0;
+        int blockCounter = 1;
 
         while (blockCounter <81 && isValid) {
             if (woods.contains(location.getBlock().getBlockData().getMaterial())) {
