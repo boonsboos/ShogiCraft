@@ -22,12 +22,18 @@ public class Game {
         toLocation.setYaw(0);
         toLocation.setPitch(0);
 
-        if (to.getPiece() != null) {
-            to.getPiece().getEntity().remove();
+        if (from.getPiece() != null) {
+            if (to.getPiece() != null) {
+                to.getPiece().getEntity().remove();
+            }
+            to.setPiece(from.getPiece());
+            from.getPiece().getEntity().teleport(toLocation);
+            from.setPiece(null);
+        } else {
+            player.sendMessage("Bad move!");
         }
-        to.setPiece(from.getPiece());
-        from.getPiece().getEntity().teleportAsync(toLocation);
         Test.clickedTileList.clear();
+        tiles.clear();
     }
 
 }
