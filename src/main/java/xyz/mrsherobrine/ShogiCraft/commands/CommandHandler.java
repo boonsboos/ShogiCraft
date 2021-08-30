@@ -2,17 +2,10 @@ package xyz.mrsherobrine.ShogiCraft.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.mrsherobrine.ShogiCraft.shogi.Board;
@@ -21,7 +14,10 @@ import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class CommandHandler implements CommandExecutor {
@@ -31,7 +27,7 @@ public class CommandHandler implements CommandExecutor {
 
     private LocationChecker locCheck;
     private ArmorStandCreator creator;
-    private Map<UUID, Tile[][]> boardList = new HashMap<>();
+    private static final Map<UUID, Tile[][]> boardList = new HashMap<>();
 
     private Game game;
 
@@ -68,12 +64,15 @@ public class CommandHandler implements CommandExecutor {
                         break;
                     case "test":
                         for (int x = 0; x<9; x++) {
-                            boardList.get(player.getUniqueId())[0][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[2][x], player.getUniqueId()));
+                            boardList.get(player.getUniqueId())[0][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[0][x], player.getUniqueId()));
+                            boardList.get(player.getUniqueId())[0][x].getPiece().getEntity().setVisible(true);
+                            boardList.get(player.getUniqueId())[1][x].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId())[1][x], player.getUniqueId()));
+                            boardList.get(player.getUniqueId())[0][x].getPiece().getEntity().customName(Component.text("Lance"));
                         }
-                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][0], player.getUniqueId());
-                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][8], player.getUniqueId());
-                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][0], player.getUniqueId());
-                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][8], player.getUniqueId());
+//                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][0], player.getUniqueId());
+//                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][8], player.getUniqueId());
+//                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][0], player.getUniqueId());
+//                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][8], player.getUniqueId());
                         break;
                     default:
                         commandSender.sendMessage(Component.text("Hmm, that doesn't look like a known command to me...", NamedTextColor.RED));
@@ -89,4 +88,10 @@ public class CommandHandler implements CommandExecutor {
             return true;
         }
     }
+
+    public Map<UUID, Tile[][]> getBoardList() {
+        return boardList;
+    }
+
+
 }

@@ -12,6 +12,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.mrsherobrine.ShogiCraft.shogi.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
+import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Lance;
 import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Pawn;
 
 import java.util.UUID;
@@ -51,6 +52,7 @@ public class ArmorStandCreator {
                 break;
             case "L":
                 //lance
+                piece = new Lance(uuid, armorStand);
                 meta.setCustomModelData(2);
                 break;
             case "GK":

@@ -1,57 +1,52 @@
 package xyz.mrsherobrine.ShogiCraft.listeners;
 
-import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.mrsherobrine.ShogiCraft.commands.CommandHandler;
+import xyz.mrsherobrine.ShogiCraft.shogi.Game;
+import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
+import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class Test implements Listener {
 
-    public JavaPlugin plugin;
+    private JavaPlugin plugin;
+
+    private LocationChecker checker;
+    private CommandHandler commandHandler;
+    private Game game;
+
     public Test(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.checker = new LocationChecker(plugin.getLogger());
+        this.commandHandler = new CommandHandler(plugin);
+        this.game = new Game();
     }
 
-    /*@EventHandler
-    public void onJoin(PlayerJoinEvent joinEvent) {
-        new Board(new int[]{0,0,9,9}, joinEvent.getPlayer().getUniqueId()).createNewBoard(plugin);
-    }*/
 
-    ArmorStand piece;
-    Player player;
+    public static final Map<String, Tile> clickedTileList = new HashMap();
 
-    Map<UUID, Location> movingPlayer = new HashMap<>();
-    Map<UUID, ArmorStand> movingEntity = new HashMap<>();
-    /*@EventHandler
+    @EventHandler
     public void moveEntity(PlayerInteractEvent event) {
 
         //TODO only do this if players are in a shogi match
 
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            plugin.getLogger().info("block.");
-            Location armorstandLoc = event.getClickedBlock().getLocation();
-            armorstandLoc.setY(armorstandLoc.getY()+1);
-
-            if (armorstandLoc.getNearbyEntities(0.2,0.2,0.2).stream().findFirst().get().getType().equals(EntityType.ARMOR_STAND)) {
-                piece = (ArmorStand) armorstandLoc.getNearbyEntities(0.2,0.2,0.2).stream().findFirst().get();
-            }
-
-            movingEntity.put(event.getPlayer().getUniqueId(), piece);
-            movingPlayer.put(event.getPlayer().getUniqueId(), armorstandLoc);
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND) && !clickedTileList.containsKey(event.getPlayer().getUniqueId()+"1")) {
+            if (checker.getClickedTile(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) !=null ) {
+                clickedTileList.put(event.getPlayer().getUniqueId()+"1", checker.getClickedTile(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+                plugin.getLogger().info("Added player to map");
+            };
+        } else if (clickedTileList.containsKey(event.getPlayer().getUniqueId()+"1") &&
+                checker.getClickedTile(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) !=null ) {
+            plugin.getLogger().info("Player added to map +2");
+            clickedTileList.put(event.getPlayer().getUniqueId() +"2", checker.getClickedTile(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+            game.move(event.getPlayer());
         }
-
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && movingPlayer.containsKey(event.getPlayer().getUniqueId())) {
-            movingEntity.get(event.getPlayer().getUniqueId()).teleport(event.getClickedBlock().getLocation());
-        }
-    }*/
-
+    }
 }

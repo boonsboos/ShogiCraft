@@ -1,10 +1,7 @@
 package xyz.mrsherobrine.ShogiCraft.shogi;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 public class Board {

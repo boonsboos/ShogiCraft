@@ -2,6 +2,7 @@ package xyz.mrsherobrine.ShogiCraft.utils;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -67,5 +68,24 @@ public class LocationChecker {
                 (int) corner.getX(), (int) corner.getZ(), (int) location.getX(), (int) location.getZ()
         };
     }
+
+    public Tile getClickedTile(Location location, Tile[][] tileMatrix) {
+
+
+        try {
+            for (Tile[] tileArray : tileMatrix) {
+                for (Tile tile : tileArray) {
+                    if (tile.getLocation().getBlockX() == location.getBlockX() && tile.getLocation().getBlockZ() == location.getBlockZ()) {
+                        return tile;
+                    }
+                }
+            }
+        } catch (NullPointerException npe) {
+            logger.info("no shogi");
+        }
+
+        return null;
+    }
+
 
 }

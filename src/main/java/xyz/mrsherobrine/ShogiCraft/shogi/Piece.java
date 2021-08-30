@@ -1,6 +1,7 @@
 package xyz.mrsherobrine.ShogiCraft.shogi;
 
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.UUID;
 
@@ -36,8 +37,7 @@ public class Piece {
         promotion = promote;
         if (promote) {
             type = "!" + type;
-        } else if (type.contains("!")) {
-            type.replace("!", "");
+            //TODO handle textures for promotion
         }
     }
 
