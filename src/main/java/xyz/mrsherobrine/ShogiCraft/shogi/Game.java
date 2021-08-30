@@ -4,7 +4,7 @@ import org.bukkit.Material;
 
 public class Game {
 
-    public void setupGame(Square[][] board) {
+    public void setupGame(Tile[][] board) {
         //lance
         board[0][0].getLocation().getBlock().setType(Material.DARK_OAK_WOOD);
         board[0][8].getLocation().getBlock().setType(Material.DARK_OAK_WOOD);

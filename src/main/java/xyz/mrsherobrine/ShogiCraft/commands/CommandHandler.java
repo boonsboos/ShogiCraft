@@ -2,15 +2,23 @@ package xyz.mrsherobrine.ShogiCraft.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.mrsherobrine.ShogiCraft.shogi.Board;
 import xyz.mrsherobrine.ShogiCraft.shogi.Game;
-import xyz.mrsherobrine.ShogiCraft.shogi.Square;
+import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
+import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
 import java.util.*;
@@ -22,7 +30,8 @@ public class CommandHandler implements CommandExecutor {
     private Logger logger;
 
     private LocationChecker locCheck;
-    private Map<UUID, Square[][]> boardList = new HashMap<>();
+    private ArmorStandCreator creator;
+    private Map<UUID, Tile[][]> boardList = new HashMap<>();
 
     private Game game;
 
@@ -31,6 +40,7 @@ public class CommandHandler implements CommandExecutor {
         this.logger = plugin.getLogger();
         this.locCheck = new LocationChecker(logger);
         this.game = new Game();
+        this.creator = new ArmorStandCreator(plugin);
     }
 
     @Override
@@ -44,7 +54,7 @@ public class CommandHandler implements CommandExecutor {
                 switch (strings[0]) {
                     case "create":
                         if (locCheck.checkLocation(player.getLocation())) {
-                            boardList.put(player.getUniqueId(), new Board().createNewBoard(plugin, locCheck.getBounds(), player.getUniqueId(), player.getLocation()));
+                            boardList.put(player.getUniqueId(), new Board().createNewBoard(player.getUniqueId(), player.getLocation()));
                             player.sendMessage("New board has been created at "+Arrays.toString(locCheck.getBounds()));
                         } else {
                             player.sendMessage("Invalid location! Please check if it's all planks and 9x9.");
@@ -54,7 +64,16 @@ public class CommandHandler implements CommandExecutor {
                         commandSender.sendMessage("not implemented yet lol");
                         break;
                     case "play":
-                        game.setupGame(boardList.get(player.getUniqueId()));
+                       //game.setupGame(boardList.get(player.getUniqueId()));
+                        break;
+                    case "test":
+                        for (int x = 0; x<9; x++) {
+                            boardList.get(player.getUniqueId())[0][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[2][x], player.getUniqueId()));
+                        }
+                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][0], player.getUniqueId());
+                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][8], player.getUniqueId());
+                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][0], player.getUniqueId());
+                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][8], player.getUniqueId());
                         break;
                     default:
                         commandSender.sendMessage(Component.text("Hmm, that doesn't look like a known command to me...", NamedTextColor.RED));
