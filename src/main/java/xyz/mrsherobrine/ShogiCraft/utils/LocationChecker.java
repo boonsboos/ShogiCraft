@@ -2,6 +2,7 @@ package xyz.mrsherobrine.ShogiCraft.utils;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 
 import java.util.Arrays;
@@ -69,8 +70,7 @@ public class LocationChecker {
         };
     }
 
-    public Tile getClickedTile(Location location, Tile[][] tileMatrix) {
-
+    public Tile getClickedTileWithinBoard(Location location, Tile[][] tileMatrix) {
 
         try {
             for (Tile[] tileArray : tileMatrix) {
@@ -81,7 +81,7 @@ public class LocationChecker {
                 }
             }
         } catch (NullPointerException npe) {
-            logger.info("no shogi");
+            logger.info("Someone clicked outside of the board...");
         }
 
         return null;

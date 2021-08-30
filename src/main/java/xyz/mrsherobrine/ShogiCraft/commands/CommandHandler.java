@@ -63,16 +63,20 @@ public class CommandHandler implements CommandExecutor {
                        //game.setupGame(boardList.get(player.getUniqueId()));
                         break;
                     case "test":
-                        for (int x = 0; x<9; x++) {
-                            boardList.get(player.getUniqueId())[0][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[0][x], player.getUniqueId()));
-                            boardList.get(player.getUniqueId())[0][x].getPiece().getEntity().setVisible(true);
-                            boardList.get(player.getUniqueId())[1][x].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId())[1][x], player.getUniqueId()));
-                            boardList.get(player.getUniqueId())[0][x].getPiece().getEntity().customName(Component.text("Lance"));
-                        }
+
+                        if (boardList.containsKey(player.getUniqueId())) {
+                            for (int x = 0; x < 9; x++) {
+                                boardList.get(player.getUniqueId())[0][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[0][x], player.getUniqueId()));
+                                boardList.get(player.getUniqueId())[1][x].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId())[1][x], player.getUniqueId()));
+                                boardList.get(player.getUniqueId())[2][x].setPiece(creator.createPiece("GK", boardList.get(player.getUniqueId())[2][x], player.getUniqueId()));
+                            }
 //                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][0], player.getUniqueId());
 //                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][8], player.getUniqueId());
 //                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][0], player.getUniqueId());
 //                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][8], player.getUniqueId());
+                        } else {
+                            player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
+                        }
                         break;
                     default:
                         commandSender.sendMessage(Component.text("Hmm, that doesn't look like a known command to me...", NamedTextColor.RED));

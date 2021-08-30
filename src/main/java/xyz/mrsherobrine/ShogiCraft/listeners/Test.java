@@ -30,23 +30,30 @@ public class Test implements Listener {
     }
 
 
-    public static final Map<String, Tile> clickedTileList = new HashMap();
+    public static final Map<String, Tile> clickedTileList = new HashMap<>();
+
+    private boolean isInList = false;
 
     @EventHandler
     public void moveEntity(PlayerInteractEvent event) {
 
         //TODO only do this if players are in a shogi match
 
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND) && !clickedTileList.containsKey(event.getPlayer().getUniqueId()+"1")) {
-            if (checker.getClickedTile(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) !=null ) {
-                clickedTileList.put(event.getPlayer().getUniqueId()+"1", checker.getClickedTile(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
-                plugin.getLogger().info("Added player to map");
-            };
-        } else if (clickedTileList.containsKey(event.getPlayer().getUniqueId()+"1") &&
-                checker.getClickedTile(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) !=null ) {
-            plugin.getLogger().info("Player added to map +2");
-            clickedTileList.put(event.getPlayer().getUniqueId() +"2", checker.getClickedTile(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
-            game.move(event.getPlayer());
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND)) {
+            if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null  && !isInList) {
+                clickedTileList.put(event.getPlayer().getUniqueId()+"1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+                isInList = true;
+            } else  if(checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) !=null ) {
+                clickedTileList.put(event.getPlayer().getUniqueId() +"2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+                game.move(event.getPlayer());
+                isInList = false;
+            }
         }
     }
+
+    public Map<String, Tile> getClickedTileList() {
+        return clickedTileList;
+    }
+
+
 }

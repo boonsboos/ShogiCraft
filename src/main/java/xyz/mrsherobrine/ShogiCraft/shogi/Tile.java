@@ -12,11 +12,15 @@ public class Tile {
     }
 
     public Piece getPiece() {
-        return piece;
+        if (piece != null) {
+            return this.piece;
+        } else {
+            return null;
+        }
     }
 
     public Location getLocation() {
-        return location;
+        return this.location;
     }
 
     public void setPiece(Piece piece) {
