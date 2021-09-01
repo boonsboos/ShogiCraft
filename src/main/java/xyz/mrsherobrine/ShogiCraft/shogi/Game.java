@@ -22,7 +22,7 @@ public class Game {
         toLocation.setYaw(0);
         toLocation.setPitch(0);
 
-        if (from.getPiece() != null) {
+        if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId())) {
             if (to.getPiece() != null) {
                 to.getPiece().getEntity().remove();
             }
@@ -32,8 +32,8 @@ public class Game {
         } else {
             player.sendMessage("Bad move!");
         }
-        Test.clickedTileList.clear();
-        tiles.clear();
+        Test.clickedTileList.remove(player.getUniqueId()+"1");
+        Test.clickedTileList.remove(player.getUniqueId()+"2");
     }
 
 }

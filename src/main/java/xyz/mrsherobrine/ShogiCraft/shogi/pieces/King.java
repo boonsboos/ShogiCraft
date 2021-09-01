@@ -9,6 +9,7 @@ public class King extends Piece  {
 
     public King(UUID owner, ArmorStand armorStand) {
         super(owner, armorStand);
+        setType("K");
     }
 
 

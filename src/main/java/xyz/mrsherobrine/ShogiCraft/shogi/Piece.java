@@ -1,7 +1,6 @@
 package xyz.mrsherobrine.ShogiCraft.shogi;
 
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.UUID;
 
@@ -36,7 +35,7 @@ public class Piece {
     public void setPromoted(boolean promote) {
         promotion = promote;
         if (promote) {
-            type = "!" + type;
+            this.type = "!" + type;
             //TODO handle textures for promotion
         }
     }
@@ -47,6 +46,10 @@ public class Piece {
 
     public void setEntity(ArmorStand as) {
         this.armorStand = as;
+    }
+
+    public boolean canMove(Tile from, Tile to, UUID uuid) {
+        return true;
     }
 
 }

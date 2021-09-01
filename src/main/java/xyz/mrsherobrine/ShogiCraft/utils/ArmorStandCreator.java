@@ -21,13 +21,14 @@ import java.util.UUID;
 public class ArmorStandCreator {
 
     private JavaPlugin plugin;
+    public static NamespacedKey ownerKey;
+
     public ArmorStandCreator(JavaPlugin plugin) {
         this.plugin = plugin;
+        ownerKey = new NamespacedKey(plugin, "PieceOwner");
     }
 
     public Piece createPiece(String type, Tile tile, UUID uuid) {
-
-        NamespacedKey ownerKey = new NamespacedKey(plugin, "PieceOwner");
 
         Piece piece = null;
 
@@ -69,6 +70,10 @@ public class ArmorStandCreator {
         armorStand.setItem(EquipmentSlot.HEAD, paper);
 
         return piece;
+    }
+
+    public NamespacedKey getOwnerKey() {
+        return ownerKey;
     }
 
 }
