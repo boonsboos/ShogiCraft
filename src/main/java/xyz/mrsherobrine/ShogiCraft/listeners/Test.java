@@ -16,14 +16,11 @@ import java.util.Map;
 
 public class Test implements Listener {
 
-    private JavaPlugin plugin;
-
     private LocationChecker checker;
     private CommandHandler commandHandler;
     private Game game;
 
     public Test(JavaPlugin plugin) {
-        this.plugin = plugin;
         this.checker = new LocationChecker(plugin.getLogger());
         this.commandHandler = new CommandHandler(plugin);
         this.game = new Game();
@@ -39,13 +36,28 @@ public class Test implements Listener {
 
         //TODO only do this if players are in a shogi match
 
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND)) {
-            if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null  && !isInList) {
-                clickedTileList.put(event.getPlayer().getUniqueId()+"1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND) /*isInGame.containsKey(event.getPlayer().getUniqueID())*/) {
+
+            //if a player is not sneaking, run normal moves
+            if (!event.getPlayer().isSneaking()) {
+                if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null && !isInList) {
+                    clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+                    isInList = true;
+                } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null) {
+                    clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+                    game.move(event.getPlayer(), false);
+                    isInList = false;
+                }
+            }
+        //if a player IS sneaking, run the move for promotion. this could be cleaner but idk how to so this is how we're doing it.
+        //in either the Game or pieces' classes, there should be code for checking if a promotion is allowed.
+        } else {
+            if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null && !isInList) {
+                clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
                 isInList = true;
-            } else  if(checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) !=null ) {
-                clickedTileList.put(event.getPlayer().getUniqueId() +"2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
-                game.move(event.getPlayer());
+            } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null) {
+                clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+                game.move(event.getPlayer(), true);
                 isInList = false;
             }
         }

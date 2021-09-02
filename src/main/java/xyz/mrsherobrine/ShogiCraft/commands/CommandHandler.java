@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -14,15 +15,11 @@ import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class CommandHandler implements CommandExecutor {
 
-    private JavaPlugin plugin;
     private Logger logger;
 
     private LocationChecker locCheck;
@@ -32,7 +29,6 @@ public class CommandHandler implements CommandExecutor {
     private Game game;
 
     public CommandHandler(JavaPlugin plugin) {
-        this.plugin = plugin;
         this.logger = plugin.getLogger();
         this.locCheck = new LocationChecker(logger);
         this.game = new Game();
@@ -47,7 +43,7 @@ public class CommandHandler implements CommandExecutor {
             if (strings.length != 0) {
 
                 //TODO main command handling
-                switch (strings[0]) {
+                switch (strings[0].toLowerCase()) {
                     case "create":
                         if (locCheck.checkLocation(player.getLocation())) {
                             boardList.put(player.getUniqueId(), new Board().createNewBoard(player.getUniqueId(), player.getLocation()));
@@ -65,17 +61,20 @@ public class CommandHandler implements CommandExecutor {
                     case "test":
 
                         if (boardList.containsKey(player.getUniqueId())) {
-                            for (int x = 0; x < 9; x++) {
-                                boardList.get(player.getUniqueId())[0][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[0][x], player.getUniqueId()));
-                                boardList.get(player.getUniqueId())[1][x].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId())[1][x], player.getUniqueId()));
-                                boardList.get(player.getUniqueId())[2][x].setPiece(creator.createPiece("GK", boardList.get(player.getUniqueId())[2][x], player.getUniqueId()));
+                            for (int x = 0; x < 3; x++) {
+                                boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[3][x], player.getUniqueId()));
+                                boardList.get(player.getUniqueId())[1][x+2].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId())[1][x+3], player.getUniqueId()));
+                                boardList.get(player.getUniqueId())[2][x+5].setPiece(creator.createPiece("R", boardList.get(player.getUniqueId())[2][x+6], player.getUniqueId()));
                             }
-//                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][0], player.getUniqueId());
-//                        creator.createPiece("L", boardList.get(player.getUniqueId())[0][8], player.getUniqueId());
-//                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][0], player.getUniqueId());
-//                        creator.createPiece("L", boardList.get(player.getUniqueId())[8][8], player.getUniqueId());
                         } else {
                             player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
+                        }
+                        break;
+                    case "clear":
+                        List<Entity> list = new ArrayList<>();
+                        list.addAll(player.getNearbyEntities(16,6,16));
+                        for (Entity e : list) {
+                            e.remove();
                         }
                         break;
                     default:

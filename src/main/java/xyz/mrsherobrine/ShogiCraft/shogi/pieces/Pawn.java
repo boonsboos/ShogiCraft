@@ -23,9 +23,9 @@ public class Pawn extends Piece {
             return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() - 1 && from.getLocation().getBlockX() == to.getLocation().getBlockX() && !isPromoted();
         } else if (from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString()) && from.getLocation() != to.getLocation()) {
             return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() + 1 && from.getLocation().getBlockX() == to.getLocation().getBlockX() && !isPromoted();
-        } else {
-            return  false;
         }
+
+        return  false;
 
         //only moves one tile, promotion not implemented yet
 

@@ -15,16 +15,15 @@ import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.shogi.pieces.King;
 import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Lance;
 import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Pawn;
+import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Rook;
 
 import java.util.UUID;
 
 public class ArmorStandCreator {
 
-    private JavaPlugin plugin;
     public static NamespacedKey ownerKey;
 
     public ArmorStandCreator(JavaPlugin plugin) {
-        this.plugin = plugin;
         ownerKey = new NamespacedKey(plugin, "PieceOwner");
     }
 
@@ -61,6 +60,10 @@ public class ArmorStandCreator {
                 //gote king
                 piece = new King(uuid, armorStand);
                 meta.setCustomModelData(3);
+                break;
+            case "R":
+                piece = new Rook(uuid, armorStand);
+                meta.setCustomModelData(4);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);

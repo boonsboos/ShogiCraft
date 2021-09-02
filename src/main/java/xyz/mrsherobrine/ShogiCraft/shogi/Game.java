@@ -11,7 +11,7 @@ public class Game {
     public Game() {
     }
 
-    public void move(Player player) {
+    public void move(Player player, boolean sneaking) {
 
         Map<String, Tile> tiles = Test.clickedTileList;
         Tile from = tiles.get(player.getUniqueId()+"1");

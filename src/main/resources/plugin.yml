@@ -1,6 +1,7 @@
 main: 'xyz.mrsherobrine.ShogiCraft.ShogiCraft'
 name: 'ShogiCraft'
 version: '1.0'
+author: 'Mrs_Herobrine_'
 api-version: '1.17'
 commands:
   shogi:
