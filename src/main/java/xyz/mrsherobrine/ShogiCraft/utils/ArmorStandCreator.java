@@ -62,6 +62,7 @@ public class ArmorStandCreator {
                 meta.setCustomModelData(3);
                 break;
             case "R":
+                //rook
                 piece = new Rook(uuid, armorStand);
                 meta.setCustomModelData(4);
                 break;
