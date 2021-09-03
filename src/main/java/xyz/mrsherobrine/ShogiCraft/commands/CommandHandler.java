@@ -45,7 +45,7 @@ public class CommandHandler implements CommandExecutor {
                 //TODO main command handling
 
 
-                /**TODO: merge some commands together:
+                /*TODO: merge some commands together:
                  * e.g. /shogi challenge accept runs create and play
                  */
 
@@ -72,6 +72,7 @@ public class CommandHandler implements CommandExecutor {
                                 boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[3][x], player.getUniqueId()));
                                 boardList.get(player.getUniqueId())[1][x+3].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId())[1][x+3], player.getUniqueId()));
                                 boardList.get(player.getUniqueId())[2][x+6].setPiece(creator.createPiece("R", boardList.get(player.getUniqueId())[2][x+6], player.getUniqueId()));
+                                boardList.get(player.getUniqueId())[5][x].setPiece(creator.createPiece("GK", boardList.get(player.getUniqueId())[5][x], player.getUniqueId()));
                             }
                         } else {
                             player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));

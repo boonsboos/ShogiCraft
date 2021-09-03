@@ -7,9 +7,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import xyz.mrsherobrine.ShogiCraft.listeners.Test;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class Game {
 
@@ -26,23 +28,25 @@ public class Game {
 
         if (sneaking) {
             player.sendMessage(Component.text("Promotion?", NamedTextColor.AQUA));
-            if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId())) {
+            if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().matches("(K|G)")) {
                 if (to.getPiece() != null) {
                     to.getPiece().getEntity().remove();
                 }
                 to.setPiece(from.getPiece());
                 from.getPiece().getEntity().teleportAsync(toLocation);
-                from.getPiece().setPromoted(true);
+
                 //this
                     ItemStack item = from.getPiece().getEntity().getItem(EquipmentSlot.HEAD);
                     ItemMeta meta = item.getItemMeta();
-                    meta.setCustomModelData(3);
+                    meta.setCustomModelData(getCorrectTextureFromType(from.getPiece().getType()));
                     item.setItemMeta(meta);
                     from.getPiece().getEntity().setItem(EquipmentSlot.HEAD, item);
                 //TODO can all be done in a different method
+
+                from.getPiece().setPromoted(true);
                 from.setPiece(null);
             } else {
-                player.sendMessage(Component.text("Bad move!", NamedTextColor.RED));
+                player.sendMessage(Component.text("Bad move or unpromotable piece!", NamedTextColor.RED));
             }
         } else {
             if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId())) {
@@ -61,12 +65,17 @@ public class Game {
     }
 
     public int getCorrectTextureFromType(String type) {
-
+        //this is for the promoted textures
         switch(type) {
-            //TODO: add stuff here >:c
+            case "P":
+                return 5;
+            case "R":
+                return 6;
+            case "L":
+                return 7;
+            default:
+                return 3;
         }
-
-        return 0;
     }
 
 }

@@ -33,10 +33,9 @@ public class Piece {
     }
 
     public void setPromoted(boolean promote) {
-        promotion = promote;
+        this.promotion = promote;
         if (promote) {
             this.type = "!" + type;
-            //TODO handle textures for promotion
         }
     }
 

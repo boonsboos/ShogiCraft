@@ -18,12 +18,15 @@ import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Pawn;
 import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Rook;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class ArmorStandCreator {
 
     public static NamespacedKey ownerKey;
+    private Logger logger;
 
     public ArmorStandCreator(JavaPlugin plugin) {
+        this.logger = plugin.getLogger();
         ownerKey = new NamespacedKey(plugin, "PieceOwner");
     }
 
