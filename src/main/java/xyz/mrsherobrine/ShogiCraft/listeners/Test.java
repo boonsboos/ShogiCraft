@@ -49,8 +49,7 @@ public class Test implements Listener {
                     isInList = false;
                 }
 
-                //if a player IS sneaking, run the move for promotion. this could be cleaner but idk how to so this is how we're doing it.
-                //in either the Game or pieces' classes, there should be code for checking if a promotion is allowed.
+            //if a player IS sneaking, run the move for promotion. this could be cleaner but idk how to so this is how we're doing it.
 
             } else {
                 if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null && !isInList) {

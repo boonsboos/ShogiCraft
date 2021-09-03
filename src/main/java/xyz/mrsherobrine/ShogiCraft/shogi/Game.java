@@ -7,11 +7,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.persistence.PersistentDataType;
 import xyz.mrsherobrine.ShogiCraft.listeners.Test;
+import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class Game {
 
@@ -23,36 +23,48 @@ public class Game {
 
         Location toLocation = to.getLocation().toCenterLocation();
         toLocation.setY(to.getLocation().getY());
-        toLocation.setYaw(0);
-        toLocation.setPitch(0);
 
         if (sneaking) {
             player.sendMessage(Component.text("Promotion?", NamedTextColor.AQUA));
-            if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().matches("(K|G)")) {
-                if (to.getPiece() != null) {
-                    to.getPiece().getEntity().remove();
-                }
-                to.setPiece(from.getPiece());
-                from.getPiece().getEntity().teleportAsync(toLocation);
+                if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().matches("(K|G)")) {
 
-                //this
+                    if (to.getPiece() != null &&  to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
+                        player.sendMessage(Component.text("You can't take your own pieces!", NamedTextColor.RED));
+                        return;
+                    }
+
+                    if (to.getPiece() != null) {
+                        to.getPiece().getEntity().remove();
+                    }
+
+                    to.setPiece(from.getPiece());
+                    from.getPiece().getEntity().teleportAsync(toLocation);
+
+                    //this
                     ItemStack item = from.getPiece().getEntity().getItem(EquipmentSlot.HEAD);
                     ItemMeta meta = item.getItemMeta();
                     meta.setCustomModelData(getCorrectTextureFromType(from.getPiece().getType()));
                     item.setItemMeta(meta);
                     from.getPiece().getEntity().setItem(EquipmentSlot.HEAD, item);
-                //TODO can all be done in a different method
+                    //TODO can all be done in a different method
 
-                from.getPiece().setPromoted(true);
-                from.setPiece(null);
-            } else {
-                player.sendMessage(Component.text("Bad move or unpromotable piece!", NamedTextColor.RED));
-            }
+                    from.getPiece().setPromoted(true);
+                    from.setPiece(null);
+                } else {
+                    player.sendMessage(Component.text("Bad move or unpromotable piece!", NamedTextColor.RED));
+                }
         } else {
             if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId())) {
+
+                if (to.getPiece() != null &&  to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
+                    player.sendMessage(Component.text("You can't take your own pieces!", NamedTextColor.RED));
+                    return;
+                }
+
                 if (to.getPiece() != null) {
                     to.getPiece().getEntity().remove();
                 }
+
                 to.setPiece(from.getPiece());
                 from.getPiece().getEntity().teleportAsync(toLocation);
                 from.setPiece(null);

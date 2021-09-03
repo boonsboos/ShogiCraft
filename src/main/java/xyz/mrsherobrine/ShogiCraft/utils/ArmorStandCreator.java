@@ -10,12 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.EulerAngle;
 import xyz.mrsherobrine.ShogiCraft.shogi.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
-import xyz.mrsherobrine.ShogiCraft.shogi.pieces.King;
-import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Lance;
-import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Pawn;
-import xyz.mrsherobrine.ShogiCraft.shogi.pieces.Rook;
+import xyz.mrsherobrine.ShogiCraft.shogi.pieces.*;
 
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -30,7 +28,7 @@ public class ArmorStandCreator {
         ownerKey = new NamespacedKey(plugin, "PieceOwner");
     }
 
-    public Piece createPiece(String type, Tile tile, UUID uuid) {
+    public Piece createPiece(String type, Tile tile, UUID uuid, int yaw) {
 
         Piece piece = null;
 
@@ -43,6 +41,7 @@ public class ArmorStandCreator {
         armorStand.setCanTick(false);
         armorStand.setVisible(false);
         armorStand.setMarker(true);
+        armorStand.setHeadPose(new EulerAngle(0,Math.toRadians(yaw),0));
         armorStand.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, uuid.toString());
 
         ItemStack paper = new ItemStack(Material.PAPER);
@@ -68,6 +67,11 @@ public class ArmorStandCreator {
                 //rook
                 piece = new Rook(uuid, armorStand);
                 meta.setCustomModelData(4);
+                break;
+            case "S":
+                //silver
+                piece = new Silver(uuid, armorStand);
+                meta.setCustomModelData(8);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);

@@ -11,6 +11,7 @@ public class ShogiCraft extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new Test(this) ,this);
         getCommand("shogi").setExecutor(new CommandHandler(this));
+
     }
 
 }

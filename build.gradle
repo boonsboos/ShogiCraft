@@ -16,4 +16,5 @@ dependencies {
 shadowJar {
     version '1.0'
     archiveBaseName.set('ShogiCraft')
+    archiveClassifier.set("")
 }
