@@ -73,6 +73,11 @@ public class ArmorStandCreator {
                 piece = new Silver(uuid, armorStand);
                 meta.setCustomModelData(8);
                 break;
+            case "G":
+                //gold
+                piece = new Gold(uuid, armorStand);
+                meta.setCustomModelData(9);
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }

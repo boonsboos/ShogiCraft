@@ -21,7 +21,7 @@ public class Rook extends Piece {
 
         //needs to be on the same X or same Z level
 
-        if (from.getLocation() != to.getLocation() && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
+        if (from.getPiece().getEntity().getHeadPose().getY() == 0 && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
             return (from.getLocation().getBlockZ() == to.getLocation().getBlockZ() || from.getLocation().getBlockX() == to.getLocation().getBlockX())  && !isPromoted();
         }
 

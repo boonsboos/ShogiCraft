@@ -20,7 +20,7 @@ public class King extends Piece  {
     public boolean canMove(Tile from, Tile to, UUID uuid) {
 
         if (from.getLocation() != to.getLocation() && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
-            return Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) <=1 && (Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) <= 1) && !isPromoted();
+            return Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) <=1 && (Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) <= 1);
         }
         return  false;
     }

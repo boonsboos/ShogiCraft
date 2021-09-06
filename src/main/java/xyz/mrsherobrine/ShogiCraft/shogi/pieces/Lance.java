@@ -21,7 +21,7 @@ public class Lance extends Piece {
     public boolean canMove(Tile from, Tile to, UUID uuid) {
         //can only move in same column
 
-        if (from.getPiece().getEntity().getFacing() == BlockFace.SOUTH && from.getLocation() != to.getLocation() && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
+        if (from.getPiece().getEntity().getHeadPose().getY() == 0 && from.getLocation() != to.getLocation() && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
             return from.getLocation().getBlockX() == to.getLocation().getBlockX() && from.getLocation().getBlockZ() < to.getLocation().getBlockZ() && !isPromoted();
         } else if (from.getLocation() != to.getLocation() && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
             return from.getLocation().getBlockX() == to.getLocation().getBlockX() && from.getLocation().getBlockZ() > to.getLocation().getBlockZ() && !isPromoted();

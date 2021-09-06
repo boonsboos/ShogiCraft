@@ -23,6 +23,7 @@ public class Game {
 
         Location toLocation = to.getLocation().toCenterLocation();
         toLocation.setY(to.getLocation().getY());
+        toLocation.setYaw(getRoundedAngle((int) toLocation.getYaw()));
 
         if (sneaking) {
             player.sendMessage(Component.text("Promotion?", NamedTextColor.AQUA));
@@ -87,6 +88,14 @@ public class Game {
                 return 7;
             default:
                 return 3;
+        }
+    }
+
+    public int getRoundedAngle(int angle) {
+        if (angle >=180) {
+            return 180;
+        } else {
+            return 0;
         }
     }
 

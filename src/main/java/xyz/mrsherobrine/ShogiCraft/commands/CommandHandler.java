@@ -2,11 +2,14 @@ package xyz.mrsherobrine.ShogiCraft.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.mrsherobrine.ShogiCraft.shogi.Board;
@@ -69,18 +72,20 @@ public class CommandHandler implements CommandExecutor {
 
                         if (boardList.containsKey(player.getUniqueId())) {
                             for (int x = 0; x < 3; x++) {
-                                boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId())[3][x], player.getUniqueId(), 0));
-                                boardList.get(player.getUniqueId())[1][x+3].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId())[1][x+3], player.getUniqueId(), 0));
-                                boardList.get(player.getUniqueId())[2][x+6].setPiece(creator.createPiece("R", boardList.get(player.getUniqueId())[2][x+6], player.getUniqueId(), 0));
-                                boardList.get(player.getUniqueId())[5][x].setPiece(creator.createPiece("S", boardList.get(player.getUniqueId())[5][x], player.getUniqueId(), 180));
+                                boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("G", boardList.get(player.getUniqueId())[3][x], player.getUniqueId(), 0));
                             }
+                            ItemStack test = new ItemStack(Material.PAPER);
+                            ItemMeta testMeta = test.getItemMeta();
+                            testMeta.setCustomModelData(9);
+                            test.setItemMeta(testMeta);
+                            player.getInventory().addItem(test);
                         } else {
                             player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                         }
                         break;
                     case "clear":
                         List<Entity> list = new ArrayList<>();
-                        list.addAll(player.getNearbyEntities(16,6,16));
+                        list.addAll(player.getNearbyEntities(16,3,16));
                         for (Entity e : list) {
                             e.remove();
                         }
