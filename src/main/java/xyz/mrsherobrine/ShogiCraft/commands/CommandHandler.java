@@ -74,11 +74,13 @@ public class CommandHandler implements CommandExecutor {
                             for (int x = 0; x < 3; x++) {
                                 boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("G", boardList.get(player.getUniqueId())[3][x], player.getUniqueId(), 0));
                             }
-                            ItemStack test = new ItemStack(Material.PAPER);
+                            /*ItemStack test = new ItemStack(Material.PAPER);
                             ItemMeta testMeta = test.getItemMeta();
                             testMeta.setCustomModelData(9);
                             test.setItemMeta(testMeta);
                             player.getInventory().addItem(test);
+                             */
+                            //TODO: USE THIS ^
                         } else {
                             player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                         }

@@ -22,8 +22,6 @@ public class Gold extends Piece {
 
         if (from.getPiece().getEntity().getHeadPose().getY() == 0 && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString()) && from.getLocation() != to.getLocation()) {
 
-            Bukkit.getPlayer(uuid).sendMessage((from.getLocation().getBlockX() - to.getLocation().getBlockX()) +","+(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()));
-
             //-1x,-1z
             // 1x,-1z
 
