@@ -33,8 +33,8 @@ public class Piece {
     }
 
     public void setPromoted(boolean promote) {
-        this.promotion = promote;
-        if (promote) {
+        if (promote && !this.promotion) {
+            this.promotion = promote;
             this.type = "!" + type;
         }
     }

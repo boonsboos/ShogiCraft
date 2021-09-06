@@ -113,5 +113,4 @@ public class LocationChecker {
         return null;
     }
 
-
 }

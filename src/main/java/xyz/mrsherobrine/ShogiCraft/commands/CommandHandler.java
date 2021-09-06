@@ -41,18 +41,15 @@ public class CommandHandler implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (commandSender instanceof Player) {
+        if (commandSender instanceof Player player) {
             logger.info(Arrays.toString(strings));
-            Player player = (Player) commandSender;
             if (strings.length != 0) {
 
                 //TODO main command handling
 
-
                 /*TODO: merge some commands together:
                  * e.g. /shogi challenge accept runs create and play
                  */
-
 
                 switch (strings[0].toLowerCase()) {
                     case "create":
@@ -82,7 +79,7 @@ public class CommandHandler implements CommandExecutor {
                             test.setItemMeta(testMeta);
                             player.getInventory().addItem(test);
                              */
-                            //TODO: USE THIS ^
+                            //TODO: USE THIS FOR CAPTURE STUFF^
                         } else {
                             player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                         }
