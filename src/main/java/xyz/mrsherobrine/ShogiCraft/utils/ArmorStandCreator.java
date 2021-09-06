@@ -78,6 +78,16 @@ public class ArmorStandCreator {
                 piece = new Gold(uuid, armorStand);
                 meta.setCustomModelData(9);
                 break;
+            case "N":
+                //knight
+                piece = new Knight(uuid, armorStand);
+                meta.setCustomModelData(10);
+                break;
+            case "B":
+                //bishop
+                piece = new Bishop(uuid, armorStand);
+                meta.setCustomModelData(12);
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }

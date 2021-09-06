@@ -23,17 +23,18 @@ public class Game {
 
         Location toLocation = to.getLocation().toCenterLocation();
         toLocation.setY(to.getLocation().getY());
-        toLocation.setYaw(getRoundedAngle((int) toLocation.getYaw()));
+        toLocation.setYaw(getRoundedAngle((int) from.getLocation().getYaw()));
 
         if (sneaking) {
-            player.sendMessage(Component.text("Promotion?", NamedTextColor.AQUA));
                 if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().matches("(K|G)")) {
 
+                    //check if piece belongs to player who's moving
                     if (to.getPiece() != null &&  to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
                         player.sendMessage(Component.text("You can't take your own pieces!", NamedTextColor.RED));
                         return;
                     }
 
+                    //run capturing logic here
                     if (to.getPiece() != null) {
                         to.getPiece().getEntity().remove();
                     }
@@ -41,18 +42,17 @@ public class Game {
                     to.setPiece(from.getPiece());
                     from.getPiece().getEntity().teleportAsync(toLocation);
 
-                    //this
                     ItemStack item = from.getPiece().getEntity().getItem(EquipmentSlot.HEAD);
                     ItemMeta meta = item.getItemMeta();
                     meta.setCustomModelData(getCorrectTextureFromType(from.getPiece().getType()));
                     item.setItemMeta(meta);
                     from.getPiece().getEntity().setItem(EquipmentSlot.HEAD, item);
-                    //TODO can all be done in a different method
+                    //TODO this can all be done in a different method
 
                     from.getPiece().setPromoted(true);
                     from.setPiece(null);
                 } else {
-                    player.sendMessage(Component.text("Bad move or unpromotable piece!", NamedTextColor.RED));
+                    player.sendMessage(Component.text("Bad move or can't promote!", NamedTextColor.RED));
                 }
         } else {
             if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId())) {
@@ -62,6 +62,7 @@ public class Game {
                     return;
                 }
 
+                //run capturing logic here
                 if (to.getPiece() != null) {
                     to.getPiece().getEntity().remove();
                 }
@@ -79,16 +80,14 @@ public class Game {
 
     public int getCorrectTextureFromType(String type) {
         //this is for the promoted textures
-        switch(type) {
-            case "P":
-                return 5;
-            case "R":
-                return 6;
-            case "L":
-                return 7;
-            default:
-                return 3;
-        }
+        return switch (type) {
+            case "P" -> 5;
+            case "R" -> 6;
+            case "L" -> 7;
+            case "N" -> 11;
+            case "B" -> 13;
+            default -> 3;
+        };
     }
 
     public int getRoundedAngle(int angle) {

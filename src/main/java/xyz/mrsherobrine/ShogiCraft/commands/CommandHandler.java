@@ -18,6 +18,7 @@ import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
+
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -72,7 +73,7 @@ public class CommandHandler implements CommandExecutor {
 
                         if (boardList.containsKey(player.getUniqueId())) {
                             for (int x = 0; x < 3; x++) {
-                                boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("G", boardList.get(player.getUniqueId())[3][x], player.getUniqueId(), 0));
+                                boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("B", boardList.get(player.getUniqueId())[3][x], player.getUniqueId(), 0));
                             }
                             /*ItemStack test = new ItemStack(Material.PAPER);
                             ItemMeta testMeta = test.getItemMeta();
