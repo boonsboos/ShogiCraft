@@ -102,7 +102,6 @@ public class LocationChecker {
 
     public Tile getClickedTileWithinBoard(Location location, Tile[][] tileMatrix) {
 
-        try {
             for (Tile[] tileArray : tileMatrix) {
                 for (Tile tile : tileArray) {
                     if (tile.getLocation().getBlockX() == location.getBlockX() && tile.getLocation().getBlockZ() == location.getBlockZ()) {
@@ -110,9 +109,6 @@ public class LocationChecker {
                     }
                 }
             }
-        } catch (NullPointerException npe) {
-            logger.info("Someone clicked outside of the board...");
-        }
 
         return null;
     }
