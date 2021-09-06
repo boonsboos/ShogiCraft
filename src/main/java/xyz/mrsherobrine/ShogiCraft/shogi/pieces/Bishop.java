@@ -41,10 +41,32 @@ public class Bishop extends Piece {
                     //backward
                 } else return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() + 1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == 0;
 
-
             }
 
-        } else {
+        } else if (from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString()) && from.getLocation() != to.getLocation()) {
+
+            if (!isPromoted()) {
+
+                return Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) >= 1 && Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) >= 1;
+
+            } else {
+
+                //i really hope this works xd
+                if (Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) >= 1 && Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) >= 1) {
+                    return true;
+                    //right
+                } else if (from.getLocation().getBlockX() - to.getLocation().getBlockX() == 1 && from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == 0) {
+                    return true;
+                    //left
+                } else if (from.getLocation().getBlockX() - to.getLocation().getBlockX() == -1 && from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == 0) {
+                    return true;
+                    //forward
+                } else if (from.getLocation().getBlockZ() == to.getLocation().getBlockZ() - 1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == 0) {
+                    return true;
+                    //backward
+                } else return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() + 1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == 0;
+
+            }
 
         }
 

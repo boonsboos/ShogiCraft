@@ -22,7 +22,47 @@ public class Rook extends Piece {
         //needs to be on the same X or same Z level
 
         if (from.getPiece().getEntity().getHeadPose().getY() == 0 && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
-            return (from.getLocation().getBlockZ() == to.getLocation().getBlockZ() || from.getLocation().getBlockX() == to.getLocation().getBlockX())  && !isPromoted();
+
+            if (!isPromoted()) {
+
+                return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() || from.getLocation().getBlockX() == to.getLocation().getBlockX();
+
+            } else {
+
+                if (from.getLocation().getBlockZ() == to.getLocation().getBlockZ() || from.getLocation().getBlockX() == to.getLocation().getBlockX()) {
+                    return true;
+                //this does diagonal
+                } else if (from.getLocation().getBlockX() - to.getLocation().getBlockX() == 1 && from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == 1) {
+                    return true;
+                } else if (from.getLocation().getBlockX() - to.getLocation().getBlockX() == -1 && from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == -1) {
+                    return true;
+                } else if (from.getLocation().getBlockZ()- to.getLocation().getBlockZ() ==  -1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == 1) {
+                    return true;
+                } else return from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == 1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == -1;
+
+            }
+
+        } else if (from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
+
+            if (!isPromoted()) {
+
+                return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() || from.getLocation().getBlockX() == to.getLocation().getBlockX();
+
+            } else {
+
+                if (from.getLocation().getBlockZ() == to.getLocation().getBlockZ() || from.getLocation().getBlockX() == to.getLocation().getBlockX()) {
+                    return true;
+                    //this does diagonal
+                } else if (from.getLocation().getBlockX() - to.getLocation().getBlockX() == 1 && from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == 1) {
+                    return true;
+                } else if (from.getLocation().getBlockX() - to.getLocation().getBlockX() == -1 && from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == -1) {
+                    return true;
+                } else if (from.getLocation().getBlockZ()- to.getLocation().getBlockZ() ==  -1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == 1) {
+                    return true;
+                } else return from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == 1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == -1;
+
+            }
+
         }
 
         return false;

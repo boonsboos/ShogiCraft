@@ -74,6 +74,7 @@ public class CommandHandler implements CommandExecutor {
                         if (boardList.containsKey(player.getUniqueId())) {
                             for (int x = 0; x < 3; x++) {
                                 boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("B", boardList.get(player.getUniqueId())[3][x], player.getUniqueId(), 0));
+                                boardList.get(player.getUniqueId())[6][x].setPiece(creator.createPiece("R", boardList.get(player.getUniqueId())[6][x], player.getUniqueId(), 0));
                             }
                             /*ItemStack test = new ItemStack(Material.PAPER);
                             ItemMeta testMeta = test.getItemMeta();
