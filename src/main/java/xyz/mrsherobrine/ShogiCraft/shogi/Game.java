@@ -86,6 +86,7 @@ public class Game {
             case "L" -> 7;
             case "N" -> 11;
             case "B" -> 13;
+            case "S" -> 15;
             default -> 3;
         };
     }

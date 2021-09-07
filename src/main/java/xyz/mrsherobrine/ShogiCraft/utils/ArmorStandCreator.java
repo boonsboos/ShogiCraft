@@ -21,10 +21,8 @@ import java.util.logging.Logger;
 public class ArmorStandCreator {
 
     public static NamespacedKey ownerKey;
-    private Logger logger;
 
     public ArmorStandCreator(JavaPlugin plugin) {
-        this.logger = plugin.getLogger();
         ownerKey = new NamespacedKey(plugin, "PieceOwner");
     }
 
@@ -88,6 +86,9 @@ public class ArmorStandCreator {
                 piece = new Bishop(uuid, armorStand);
                 meta.setCustomModelData(12);
                 break;
+            case "SK":
+                piece = new King(uuid, armorStand);
+                meta.setCustomModelData(15);
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
