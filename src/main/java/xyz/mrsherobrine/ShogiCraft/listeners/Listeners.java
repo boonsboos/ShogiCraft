@@ -14,13 +14,13 @@ import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Test implements Listener {
+public class Listeners implements Listener {
 
     private LocationChecker checker;
     private CommandHandler commandHandler;
     private Game game;
 
-    public Test(JavaPlugin plugin) {
+    public Listeners(JavaPlugin plugin) {
         this.checker = new LocationChecker(plugin.getLogger());
         this.commandHandler = new CommandHandler(plugin);
         this.game = new Game();

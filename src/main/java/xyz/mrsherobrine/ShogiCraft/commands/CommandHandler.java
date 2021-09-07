@@ -29,6 +29,7 @@ public class CommandHandler implements CommandExecutor {
     private LocationChecker locCheck;
     private ArmorStandCreator creator;
     private static final Map<UUID, Tile[][]> boardList = new HashMap<>();
+    public static final Map<UUID, Boolean> isInGame = new HashMap<>();
 
     private Game game;
 
@@ -45,12 +46,6 @@ public class CommandHandler implements CommandExecutor {
             logger.info(Arrays.toString(strings));
             if (strings.length != 0) {
 
-                //TODO main command handling
-
-                /*TODO: merge some commands together:
-                 * e.g. /shogi challenge accept runs create and play
-                 */
-
                 switch (strings[0].toLowerCase()) {
                     case "remove":
                         commandSender.sendMessage("not implemented yet lol");
@@ -58,29 +53,36 @@ public class CommandHandler implements CommandExecutor {
                     case "play":
                        //game.setupGame(boardList.get(player.getUniqueId()));
                         break;
-                    case "create":
-                        if (locCheck.checkLocation(player.getLocation())) {
-                            boardList.put(player.getUniqueId(), new Board().createNewBoard(player.getUniqueId(), player.getLocation()));
-                            player.sendMessage("New board has been created at "+Arrays.toString(locCheck.getBounds()));
-                        } else {
-                            player.sendMessage("Invalid location! Please check if it's all planks and 9x9.");
-                        }
-                    case "test":
+                    case "challenge":
 
-                        if (boardList.containsKey(player.getUniqueId())) {
-                            for (int x = 0; x < 3; x++) {
-                                boardList.get(player.getUniqueId())[3][x+3].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[3][x+3], player.getUniqueId(), 0));
-                                boardList.get(player.getUniqueId())[6][x].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[6][x], player.getUniqueId(), 0));
+                        //TODO: check for player
+                        //TODO: pending challenges
+                        if (strings.length == 3) {
+                            if (locCheck.checkLocation(player.getLocation())) {
+                                boardList.put(player.getUniqueId(), new Board().createNewBoard(player.getUniqueId(), player.getLocation()));
+                                player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
+                            } else {
+                                player.sendMessage("Invalid location! Please check if it's all planks and 9x9.");
+                                break;
                             }
-                            /*ItemStack test = new ItemStack(Material.PAPER);
+                            if (boardList.containsKey(player.getUniqueId())) {
+                                for (int x = 0; x < 3; x++) {
+                                    boardList.get(player.getUniqueId())[3][x + 3].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[3][x + 3], player.getUniqueId(), 0));
+                                    boardList.get(player.getUniqueId())[6][x].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[6][x], player.getUniqueId(), 0));
+                                }
+                            /*
+                            ItemStack test = new ItemStack(Material.PAPER);
                             ItemMeta testMeta = test.getItemMeta();
                             testMeta.setCustomModelData(9);
                             test.setItemMeta(testMeta);
                             player.getInventory().addItem(test);
                              */
-                            //TODO: USE THIS FOR CAPTURE STUFF^
+                                //TODO: USE THIS FOR CAPTURE STUFF^
+                            } else {
+                                player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
+                            }
                         } else {
-                            player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
+                            return false;
                         }
                         break;
                     case "clear":

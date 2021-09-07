@@ -8,7 +8,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import xyz.mrsherobrine.ShogiCraft.listeners.Test;
+import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 
 import java.util.Map;
@@ -17,7 +17,7 @@ public class Game {
 
     public void move(Player player, boolean sneaking) {
 
-        Map<String, Tile> tiles = Test.clickedTileList;
+        Map<String, Tile> tiles = Listeners.clickedTileList;
         Tile from = tiles.get(player.getUniqueId()+"1");
         Tile to = tiles.get(player.getUniqueId()+"2");
 
@@ -74,8 +74,8 @@ public class Game {
                 player.sendMessage(Component.text("Bad move!", NamedTextColor.RED));
             }
         }
-        Test.clickedTileList.remove(player.getUniqueId()+"1");
-        Test.clickedTileList.remove(player.getUniqueId()+"2");
+        Listeners.clickedTileList.remove(player.getUniqueId()+"1");
+        Listeners.clickedTileList.remove(player.getUniqueId()+"2");
     }
 
     public int getCorrectTextureFromType(String type) {
