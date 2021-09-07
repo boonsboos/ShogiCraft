@@ -58,11 +58,14 @@ public class CommandHandler implements CommandExecutor {
                         //TODO: check for player
                         //TODO: pending challenges
                         if (strings.length == 3) {
-                            if (locCheck.checkLocation(player.getLocation())) {
+                            if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
                                 boardList.put(player.getUniqueId(), new Board().createNewBoard(player.getUniqueId(), player.getLocation()));
                                 player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
+                            } else if (boardList.containsKey(player.getUniqueId())) {
+                                player.sendMessage(Component.text("You already have a board!", NamedTextColor.RED));
+                                break;
                             } else {
-                                player.sendMessage("Invalid location! Please check if it's all planks and 9x9.");
+                                player.sendMessage(Component.text("Invalid board! Please check if it's all wood and 9x9.", NamedTextColor.RED));
                                 break;
                             }
                             if (boardList.containsKey(player.getUniqueId())) {
