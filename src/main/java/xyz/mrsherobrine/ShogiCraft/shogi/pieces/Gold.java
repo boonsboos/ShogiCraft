@@ -24,10 +24,6 @@ public class Gold extends Piece {
 
             if (!isPromoted()) {
 
-                return  (from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == -2 && Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) ==1);
-
-            } else {
-
                 //forward diagonal
                 if (from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == -1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == -1) {
                     return true;

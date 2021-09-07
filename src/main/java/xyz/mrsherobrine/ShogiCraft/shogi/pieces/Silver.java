@@ -39,7 +39,9 @@ public class Silver extends Piece {
                     return true;
                 //normal forward
                 } else return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() - 1;
+
             } else {
+
                 if (from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == -1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == -1) {
                     return true;
                 } else if (from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == -1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == 1) {
@@ -55,6 +57,7 @@ public class Silver extends Piece {
                     return true;
                     //backward
                 } else return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() + 1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == 0;
+
             }
 
         } else if (from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString()) && from.getLocation() != to.getLocation()) {
