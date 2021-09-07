@@ -52,6 +52,12 @@ public class CommandHandler implements CommandExecutor {
                  */
 
                 switch (strings[0].toLowerCase()) {
+                    case "remove":
+                        commandSender.sendMessage("not implemented yet lol");
+                        break;
+                    case "play":
+                       //game.setupGame(boardList.get(player.getUniqueId()));
+                        break;
                     case "create":
                         if (locCheck.checkLocation(player.getLocation())) {
                             boardList.put(player.getUniqueId(), new Board().createNewBoard(player.getUniqueId(), player.getLocation()));
@@ -59,19 +65,12 @@ public class CommandHandler implements CommandExecutor {
                         } else {
                             player.sendMessage("Invalid location! Please check if it's all planks and 9x9.");
                         }
-                        break;
-                    case "remove":
-                        commandSender.sendMessage("not implemented yet lol");
-                        break;
-                    case "play":
-                       //game.setupGame(boardList.get(player.getUniqueId()));
-                        break;
                     case "test":
 
                         if (boardList.containsKey(player.getUniqueId())) {
                             for (int x = 0; x < 3; x++) {
-                                boardList.get(player.getUniqueId())[3][x].setPiece(creator.createPiece("B", boardList.get(player.getUniqueId())[3][x], player.getUniqueId(), 0));
-                                boardList.get(player.getUniqueId())[6][x].setPiece(creator.createPiece("R", boardList.get(player.getUniqueId())[6][x], player.getUniqueId(), 0));
+                                boardList.get(player.getUniqueId())[3][x+3].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[3][x+3], player.getUniqueId(), 0));
+                                boardList.get(player.getUniqueId())[6][x].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[6][x], player.getUniqueId(), 0));
                             }
                             /*ItemStack test = new ItemStack(Material.PAPER);
                             ItemMeta testMeta = test.getItemMeta();

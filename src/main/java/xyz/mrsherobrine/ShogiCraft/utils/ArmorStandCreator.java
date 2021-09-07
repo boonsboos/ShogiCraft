@@ -98,8 +98,4 @@ public class ArmorStandCreator {
         return piece;
     }
 
-    public NamespacedKey getOwnerKey() {
-        return ownerKey;
-    }
-
 }
