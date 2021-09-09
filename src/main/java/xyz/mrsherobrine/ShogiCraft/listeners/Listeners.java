@@ -38,9 +38,10 @@ public class Listeners implements Listener {
 
         if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND) /*isInGame.containsKey(event.getPlayer().getUniqueID())*/) {
 
-            //if a player is not sneaking, run normal moves
+            //if a player is not sneaking, run normal moves or drops
             if (!event.getPlayer().isSneaking()) {
                 if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null && !isInList) {
+                    /*if (event.getPlayer().getItemInUse().) TODO DROPPING LOGIC HERE */
                     clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
                     isInList = true;
                 } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null) {
