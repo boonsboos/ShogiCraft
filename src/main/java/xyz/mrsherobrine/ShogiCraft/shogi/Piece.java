@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Piece {
 
-    private String type;
+    private PieceType type;
     private UUID owner;
     private ArmorStand armorStand;
     private boolean promotion = false;
@@ -16,11 +16,11 @@ public class Piece {
         this.owner = owner;
     }
 
-    public String getType() {
+    public PieceType getType() {
         return type;
     }
 
-    public void setType(String newType) {
+    public void setType(PieceType newType) {
         this.type = newType;
     }
 
@@ -35,7 +35,6 @@ public class Piece {
     public void setPromoted(boolean promote) {
         if (promote && !this.promotion) {
             this.promotion = promote;
-            this.type = "!" + type;
         }
     }
 

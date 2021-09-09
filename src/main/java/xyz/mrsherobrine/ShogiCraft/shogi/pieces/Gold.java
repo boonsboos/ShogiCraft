@@ -1,10 +1,9 @@
 package xyz.mrsherobrine.ShogiCraft.shogi.pieces;
 
-import org.bukkit.Bukkit;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.mrsherobrine.ShogiCraft.shogi.Piece;
+import xyz.mrsherobrine.ShogiCraft.shogi.PieceType;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 
@@ -14,7 +13,7 @@ public class Gold extends Piece {
 
     public Gold(UUID owner, ArmorStand armorStand) {
         super(owner, armorStand);
-        setType("G");
+        setType(PieceType.G);
     }
 
     @Override

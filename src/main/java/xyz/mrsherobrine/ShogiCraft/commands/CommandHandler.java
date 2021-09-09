@@ -48,7 +48,7 @@ public class CommandHandler implements CommandExecutor {
 
                 switch (strings[0].toLowerCase()) {
                     case "remove":
-                        commandSender.sendMessage("not implemented yet lol");
+                        isInGame.remove(player.getUniqueId());
                         break;
                     case "play":
                        //game.setupGame(boardList.get(player.getUniqueId()));
@@ -57,10 +57,11 @@ public class CommandHandler implements CommandExecutor {
 
                         //TODO: check for player
                         //TODO: pending challenges
-                        if (strings.length == 3) {
+                        if (strings.length == 2) {
                             if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
                                 boardList.put(player.getUniqueId(), new Board().createNewBoard(player.getUniqueId(), player.getLocation()));
                                 player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
+                                isInGame.put(player.getUniqueId(), true);
                             } else if (boardList.containsKey(player.getUniqueId())) {
                                 player.sendMessage(Component.text("You already have a board!", NamedTextColor.RED));
                                 break;
@@ -70,8 +71,8 @@ public class CommandHandler implements CommandExecutor {
                             }
                             if (boardList.containsKey(player.getUniqueId())) {
                                 for (int x = 0; x < 3; x++) {
-                                    boardList.get(player.getUniqueId())[3][x + 3].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[3][x + 3], player.getUniqueId(), 0));
-                                    boardList.get(player.getUniqueId())[6][x].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[6][x], player.getUniqueId(), 0));
+                                    boardList.get(player.getUniqueId())[3][x + 3].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[3][x + 3], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId())[6][x].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[6][x], player.getUniqueId(), 180));
                                 }
                             /*
                             ItemStack test = new ItemStack(Material.PAPER);
@@ -80,7 +81,7 @@ public class CommandHandler implements CommandExecutor {
                             test.setItemMeta(testMeta);
                             player.getInventory().addItem(test);
                              */
-                                //TODO: USE THIS FOR CAPTURE STUFF^
+                            //TODO: USE THIS FOR CAPTURE STUFF^
                             } else {
                                 player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                             }

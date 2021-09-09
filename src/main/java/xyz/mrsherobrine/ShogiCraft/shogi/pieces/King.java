@@ -1,9 +1,9 @@
 package xyz.mrsherobrine.ShogiCraft.shogi.pieces;
 
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.mrsherobrine.ShogiCraft.shogi.Piece;
+import xyz.mrsherobrine.ShogiCraft.shogi.PieceType;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 
@@ -13,7 +13,7 @@ public class King extends Piece  {
 
     public King(UUID owner, ArmorStand armorStand) {
         super(owner, armorStand);
-        this.setType("K");
+        this.setType(PieceType.K);
     }
 
     @Override

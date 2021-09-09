@@ -12,6 +12,7 @@ import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class Game {
 
@@ -26,7 +27,7 @@ public class Game {
         toLocation.setYaw(getRoundedAngle((int) from.getLocation().getYaw()));
 
         if (sneaking) {
-                if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().matches("(K|G)")) {
+                if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().toString().matches("(K|G)")) {
 
                     //check if piece belongs to player who's moving
                     if (to.getPiece() != null &&  to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
@@ -64,6 +65,7 @@ public class Game {
 
                 //run capturing logic here
                 if (to.getPiece() != null) {
+                    capture(to.getPiece().getType(), player.getUniqueId());
                     to.getPiece().getEntity().remove();
                 }
 
@@ -78,15 +80,15 @@ public class Game {
         Listeners.clickedTileList.remove(player.getUniqueId()+"2");
     }
 
-    public int getCorrectTextureFromType(String type) {
+    public int getCorrectTextureFromType(PieceType type) {
         //this is for the promoted textures
         return switch (type) {
-            case "P" -> 5;
-            case "R" -> 6;
-            case "L" -> 7;
-            case "N" -> 11;
-            case "B" -> 13;
-            case "S" -> 15;
+            case P -> 5;
+            case R -> 6;
+            case L -> 7;
+            case N -> 11;
+            case B -> 13;
+            case S -> 15;
             default -> 3;
         };
     }
@@ -97,6 +99,12 @@ public class Game {
         } else {
             return 0;
         }
+    }
+
+    public void capture(PieceType type, UUID uuid) {
+
+
+
     }
 
 }
