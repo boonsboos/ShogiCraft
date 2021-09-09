@@ -49,7 +49,7 @@ public class Lance extends Piece {
             }
 
 
-        } else if (from.getLocation() != to.getLocation() && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
+        } else if (from.getPiece().getEntity().getHeadPose().getY() == Math.PI && from.getLocation() != to.getLocation() && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
 
             if (!isPromoted()) {
 

@@ -1,12 +1,13 @@
 main: 'xyz.mrsherobrine.ShogiCraft.ShogiCraft'
 name: 'ShogiCraft'
+description: "Allows you to play traditional Japanese shogi in Minecraft!"
 version: '1.0'
 author: 'Mrs_Herobrine_'
 api-version: '1.17'
 commands:
   shogi:
     description: 'Main command that handles everything'
-    permission: 'ShogiCraft.shogi'
+    permission: 'shogicraft.shogi'
     usage: |
       /shogi create
       /shogi remove
@@ -17,6 +18,6 @@ commands:
       /shogi rematch <player>
       /shogi rematch <accept|deny>
 permissions:
-  ShogiFraft.shogi:
+  shogicraft.shogi:
     description: 'Main permission'
-    default: not op
+    default: true

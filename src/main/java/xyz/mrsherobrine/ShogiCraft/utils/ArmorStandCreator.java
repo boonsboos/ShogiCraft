@@ -45,52 +45,52 @@ public class ArmorStandCreator {
         ItemStack paper = new ItemStack(Material.PAPER);
         ItemMeta meta = paper.getItemMeta();
 
-        switch(type) {
-            case "P":
+        switch (type) {
+            case "P" -> {
                 //pawn
                 piece = new Pawn(uuid, armorStand);
                 meta.setCustomModelData(1);
-                break;
-            case "L":
+            }
+            case "L" -> {
                 //lance
                 piece = new Lance(uuid, armorStand);
                 meta.setCustomModelData(2);
-                break;
-            case "GK":
+            }
+            case "GK" -> {
                 //gote king
                 piece = new King(uuid, armorStand);
                 meta.setCustomModelData(3);
-                break;
-            case "R":
+            }
+            case "R" -> {
                 //rook
                 piece = new Rook(uuid, armorStand);
                 meta.setCustomModelData(4);
-                break;
-            case "S":
+            }
+            case "S" -> {
                 //silver
                 piece = new Silver(uuid, armorStand);
                 meta.setCustomModelData(8);
-                break;
-            case "G":
+            }
+            case "G" -> {
                 //gold
                 piece = new Gold(uuid, armorStand);
                 meta.setCustomModelData(9);
-                break;
-            case "N":
+            }
+            case "N" -> {
                 //knight
                 piece = new Knight(uuid, armorStand);
                 meta.setCustomModelData(10);
-                break;
-            case "B":
+            }
+            case "B" -> {
                 //bishop
                 piece = new Bishop(uuid, armorStand);
                 meta.setCustomModelData(12);
-                break;
-            case "SK":
+            }
+            case "SK" -> {
                 piece = new King(uuid, armorStand);
                 meta.setCustomModelData(15);
-            default:
-                throw new IllegalStateException("Unexpected value: " + type);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + type);
         }
 
         paper.setItemMeta(meta);
