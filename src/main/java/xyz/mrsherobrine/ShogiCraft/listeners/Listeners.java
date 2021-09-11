@@ -12,10 +12,7 @@ import xyz.mrsherobrine.ShogiCraft.shogi.Game;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Listeners implements Listener {
 
@@ -48,14 +45,18 @@ public class Listeners implements Listener {
             //if a player is not sneaking, run normal moves or drops
             if (!event.getPlayer().isSneaking()) {
                 if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null && !isInList) {
-                    if (event.getPlayer().getActiveItem().getType() == Material.PAPER && customModelDataInfo.contains(event.getPlayer().getActiveItem().getItemMeta().getCustomModelData())) {
+                    if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER /*&& customModelDataInfo.contains(event.getPlayer().getActiveItem().getItemMeta().getCustomModelData())*/) {
 
                         game.drop(
-                                checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),
-                                commandHandler.getBoardList().get(event.getPlayer().getUniqueId())),
-                                event.getPlayer().getItemInUse().getItemMeta().getCustomModelData(),
-                                event.getPlayer().getUniqueId()
+                                checker.getClickedTileWithinBoard(
+                                        event.getClickedBlock().getLocation(),
+                                        commandHandler.getBoardList().get(event.getPlayer().getUniqueId())
+                                ),
+                                event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getCustomModelData(),
+                                UUID.randomUUID()
                         );
+
+                        event.getPlayer().getInventory().getItemInMainHand().subtract();
 
                     } else {
                         clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));

@@ -28,7 +28,7 @@ public class CommandHandler implements CommandExecutor {
 
     private LocationChecker locCheck;
     private ArmorStandCreator creator;
-    public static final Map<UUID, Tile[][]> boardList = new HashMap<>();
+    public static final Map<UUID, Board> boardList = new HashMap<>();
     public static final Map<UUID, Boolean> isInGame = new HashMap<>();
 
     private Game game;
@@ -59,7 +59,7 @@ public class CommandHandler implements CommandExecutor {
                         //TODO: pending challenges
                         if (strings.length == 2) {
                             if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
-                                boardList.put(player.getUniqueId(), new Board().createNewBoard(player.getUniqueId(), player.getLocation()));
+                                boardList.put(player.getUniqueId(), new Board(player.getUniqueId(), player.getLocation()));
                                 player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
                                 isInGame.put(player.getUniqueId(), true);
                             } else if (boardList.containsKey(player.getUniqueId())) {
@@ -70,18 +70,18 @@ public class CommandHandler implements CommandExecutor {
                                 break;
                             }
                             if (boardList.containsKey(player.getUniqueId())) {
-                                for (int x = 0; x < 3; x++) {
-                                    boardList.get(player.getUniqueId())[3][x + 3].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[3][x + 3], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId())[6][x].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId())[6][x], player.getUniqueId(), 180));
+                                for (int x = 0; x < 9; x++) {
+                                    boardList.get(player.getUniqueId()).getBoard()[0][x].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId()).getBoard()[0][x], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId()).getBoard()[1][x].setPiece(creator.createPiece("G", boardList.get(player.getUniqueId()).getBoard()[1][x], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId()).getBoard()[2][x].setPiece(creator.createPiece("S", boardList.get(player.getUniqueId()).getBoard()[2][x], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId()).getBoard()[3][x].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId()).getBoard()[3][x], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId()).getBoard()[4][x].setPiece(creator.createPiece("R", boardList.get(player.getUniqueId()).getBoard()[4][x], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId()).getBoard()[5][x].setPiece(creator.createPiece("B", boardList.get(player.getUniqueId()).getBoard()[5][x], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId()).getBoard()[6][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId()).getBoard()[6][x], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId()).getBoard()[7][x].setPiece(creator.createPiece("GK", boardList.get(player.getUniqueId()).getBoard()[7][x], player.getUniqueId(), 180));
+                                    boardList.get(player.getUniqueId()).getBoard()[8][x].setPiece(creator.createPiece("SK", boardList.get(player.getUniqueId()).getBoard()[8][x], player.getUniqueId(), 180));
                                 }
-                            /*
-                            ItemStack test = new ItemStack(Material.PAPER);
-                            ItemMeta testMeta = test.getItemMeta();
-                            testMeta.setCustomModelData(9);
-                            test.setItemMeta(testMeta);
-                            player.getInventory().addItem(test);
-                             */
-                            //TODO: USE THIS FOR CAPTURE STUFF^
+
                             } else {
                                 player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                             }
@@ -111,9 +111,8 @@ public class CommandHandler implements CommandExecutor {
         }
     }
 
-    public Map<UUID, Tile[][]> getBoardList() {
+    public Map<UUID, Board> getBoardList() {
         return boardList;
     }
-
 
 }

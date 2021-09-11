@@ -9,9 +9,12 @@ public class Board {
     private UUID owner;
     private Tile[][] board = new Tile[9][9];
 
-    public Tile[][] createNewBoard(UUID owner, Location location) {
-
+    public Board(UUID owner, Location location) {
         this.owner = owner;
+        this.board = createNewBoard(location);
+    }
+
+    public Tile[][] createNewBoard(Location location) {
 
         //shift location to be a corner
         location.setX((double) (int) location.getX()-4.0);
@@ -34,6 +37,10 @@ public class Board {
 
     public Tile getSquare(int row, int column){
         return board[row][column];
+    }
+
+    public Tile[][] getBoard() {
+        return board;
     }
 
     public UUID getOwner() {

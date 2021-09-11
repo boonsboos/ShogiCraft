@@ -11,7 +11,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import xyz.mrsherobrine.ShogiCraft.commands.CommandHandler;
 import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
@@ -48,8 +47,8 @@ public class Game {
                         return;
                     }
 
-                    //run capturing logic here
                     if (to.getPiece() != null) {
+                        capture(to.getPiece().getType(), player.getUniqueId());
                         to.getPiece().getEntity().remove();
                     }
 
@@ -76,7 +75,6 @@ public class Game {
                     return;
                 }
 
-                //run capturing logic here
                 if (to.getPiece() != null) {
                     capture(to.getPiece().getType(), player.getUniqueId());
                     to.getPiece().getEntity().remove();
@@ -121,6 +119,7 @@ public class Game {
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();
         meta.setCustomModelData(getTextureFromType(type));
+        item.setItemMeta(meta);
 
         if (p.getInventory().firstEmpty()== -1) {
             Location pLoc = p.getLocation();
@@ -135,7 +134,7 @@ public class Game {
     public void drop(Tile destination, int customModelData, UUID uuid) {
 
         //TODO get which side which player is on
-        creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, 0);
+        destination.setPiece(creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, 0));
 
     }
 
@@ -153,7 +152,6 @@ public class Game {
     }
 
     public int getTextureFromType(PieceType type) {
-        //this is for the promoted textures
         return switch (type) {
             case P -> 1;
             case R -> 4;
@@ -164,6 +162,12 @@ public class Game {
             case G -> 9;
             default -> throw new IllegalStateException("Unexpected value: "+ type);
         };
+    }
+
+    public void setupGame(Tile[][] board) {
+
+
+
     }
 
 }
