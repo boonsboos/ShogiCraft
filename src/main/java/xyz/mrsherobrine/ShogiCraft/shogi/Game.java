@@ -118,6 +118,7 @@ public class Game {
 
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();
+        meta.displayName();
         meta.setCustomModelData(getTextureFromType(type));
         item.setItemMeta(meta);
 
@@ -133,7 +134,7 @@ public class Game {
 
     public void drop(Tile destination, int customModelData, UUID uuid) {
 
-        //TODO get which side which player is on
+        //TODO get which side which player is on to influence the yaw
         destination.setPiece(creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, 0));
 
     }
@@ -165,9 +166,7 @@ public class Game {
     }
 
     public void setupGame(Tile[][] board) {
-
-
-
+        //TODO: make this work
     }
 
 }

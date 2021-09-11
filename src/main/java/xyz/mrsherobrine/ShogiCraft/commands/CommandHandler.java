@@ -2,22 +2,21 @@ package xyz.mrsherobrine.ShogiCraft.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Material;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.mrsherobrine.ShogiCraft.shogi.Board;
 import xyz.mrsherobrine.ShogiCraft.shogi.Game;
-import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
+import xyz.mrsherobrine.ShogiCraft.shogi.challenge.GameChallenge;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
-
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -25,11 +24,13 @@ import java.util.logging.Logger;
 public class CommandHandler implements CommandExecutor {
 
     private Logger logger;
-
     private LocationChecker locCheck;
     private ArmorStandCreator creator;
+    private GameChallenge challenge;
+
     public static final Map<UUID, Board> boardList = new HashMap<>();
     public static final Map<UUID, Boolean> isInGame = new HashMap<>();
+    public static final Map<UUID, UUID> challenges = new HashMap<>();
 
     private Game game;
 
@@ -38,6 +39,7 @@ public class CommandHandler implements CommandExecutor {
         this.locCheck = new LocationChecker();
         this.game = new Game();
         this.creator = new ArmorStandCreator();
+        this.challenge = new GameChallenge();
     }
 
     @Override
@@ -49,42 +51,61 @@ public class CommandHandler implements CommandExecutor {
                 switch (strings[0].toLowerCase()) {
                     case "remove":
                         isInGame.remove(player.getUniqueId());
-                        break;
-                    case "play":
-                       //game.setupGame(boardList.get(player.getUniqueId()));
+                        boardList.remove(player.getUniqueId());
                         break;
                     case "challenge":
 
                         //TODO: check for player
-                        //TODO: pending challenges
                         if (strings.length == 2) {
+
+                            //checks if it's valid player
+                            if (Bukkit.getPlayer(strings[1]) != null && !challenges.containsValue(player.getUniqueId())) {
+                                challenge.challengeSend(player.getName(), strings[1]);
+                                challenges.put(Bukkit.getPlayerUniqueId(strings[1]), player.getUniqueId());
+                            } else if (Bukkit.getPlayer(strings[1]) == null && !strings[1].matches("(deny|accept)")) {
+                                player.sendMessage(Component.text("Player not found or not online!", NamedTextColor.RED));
+                                break;
+                            }
+
+                            //accepting logic
+                            if (strings[1].matches("(accept)") && challenges.containsKey(player.getUniqueId())) {
+                                challenge.challengeAccept(player.getName(), challenges.get(player.getUniqueId()));
+                                //so i can make sure they're the only ones at that board.
+                                boardList.put(player.getUniqueId(), boardList.get(challenges.get(player.getUniqueId())));
+                                break;
+                            } else if (strings[1].contains("accept") && !challenges.containsKey(player.getUniqueId())) {
+                                player.sendMessage(Component.text("You have no challenges!", NamedTextColor.YELLOW));
+                                break;
+                            }
+
+                            //denying logic
+                            if (strings[1].matches("(deny)") && challenges.containsKey(player.getUniqueId())) {
+                                challenge.challengeDeny(player.getName(), challenges.get(player.getUniqueId()));
+                                break;
+                            } else if (strings[1].contains("deny") && !challenges.containsKey(player.getUniqueId())) {
+                                player.sendMessage(Component.text("You have no challenges!", NamedTextColor.YELLOW));
+                                break;
+                            }
+
+
+
                             if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
                                 boardList.put(player.getUniqueId(), new Board(player.getUniqueId(), player.getLocation()));
                                 player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
                                 isInGame.put(player.getUniqueId(), true);
                             } else if (boardList.containsKey(player.getUniqueId())) {
-                                player.sendMessage(Component.text("You already have a board!", NamedTextColor.RED));
-                                break;
+                                player.sendMessage(Component.text("You have a board! Run /shogi remove if you want to get rid of it.", NamedTextColor.YELLOW));
                             } else {
-                                player.sendMessage(Component.text("Invalid board! Please check if it's all wood and 9x9.", NamedTextColor.RED));
+                                player.sendMessage(Component.text("Invalid board! Please check if it's all wood and 9x9. Are you standing in the center?", NamedTextColor.RED));
                                 break;
                             }
-                            if (boardList.containsKey(player.getUniqueId())) {
-                                for (int x = 0; x < 9; x++) {
-                                    boardList.get(player.getUniqueId()).getBoard()[0][x].setPiece(creator.createPiece("N", boardList.get(player.getUniqueId()).getBoard()[0][x], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId()).getBoard()[1][x].setPiece(creator.createPiece("G", boardList.get(player.getUniqueId()).getBoard()[1][x], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId()).getBoard()[2][x].setPiece(creator.createPiece("S", boardList.get(player.getUniqueId()).getBoard()[2][x], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId()).getBoard()[3][x].setPiece(creator.createPiece("L", boardList.get(player.getUniqueId()).getBoard()[3][x], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId()).getBoard()[4][x].setPiece(creator.createPiece("R", boardList.get(player.getUniqueId()).getBoard()[4][x], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId()).getBoard()[5][x].setPiece(creator.createPiece("B", boardList.get(player.getUniqueId()).getBoard()[5][x], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId()).getBoard()[6][x].setPiece(creator.createPiece("P", boardList.get(player.getUniqueId()).getBoard()[6][x], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId()).getBoard()[7][x].setPiece(creator.createPiece("GK", boardList.get(player.getUniqueId()).getBoard()[7][x], player.getUniqueId(), 180));
-                                    boardList.get(player.getUniqueId()).getBoard()[8][x].setPiece(creator.createPiece("SK", boardList.get(player.getUniqueId()).getBoard()[8][x], player.getUniqueId(), 180));
-                                }
 
+                            if (boardList.containsKey(player.getUniqueId())) {
+                                game.setupGame(boardList.get(player.getUniqueId()).getBoard());
                             } else {
                                 player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                             }
+
                         } else {
                             return false;
                         }
@@ -93,7 +114,11 @@ public class CommandHandler implements CommandExecutor {
                         List<Entity> list = new ArrayList<>();
                         list.addAll(player.getNearbyEntities(16,3,16));
                         for (Entity e : list) {
-                            e.remove();
+                            if (e instanceof ArmorStand && e.getPersistentDataContainer().has(ArmorStandCreator.ownerKey, PersistentDataType.STRING)) {
+                                e.remove();
+                            } else {
+                                list.remove(e);
+                            }
                         }
                         break;
                     default:
