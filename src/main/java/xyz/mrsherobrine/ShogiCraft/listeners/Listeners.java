@@ -1,5 +1,6 @@
 package xyz.mrsherobrine.ShogiCraft.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -11,7 +12,9 @@ import xyz.mrsherobrine.ShogiCraft.shogi.Game;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Listeners implements Listener {
@@ -20,8 +23,12 @@ public class Listeners implements Listener {
     private CommandHandler commandHandler;
     private Game game;
 
+    private final List<Integer> customModelDataInfo = Arrays.asList(
+        1, 2, 4, 8, 9, 10, 12
+    );
+
     public Listeners(JavaPlugin plugin) {
-        this.checker = new LocationChecker(plugin.getLogger());
+        this.checker = new LocationChecker();
         this.commandHandler = new CommandHandler(plugin);
         this.game = new Game();
     }
@@ -41,9 +48,19 @@ public class Listeners implements Listener {
             //if a player is not sneaking, run normal moves or drops
             if (!event.getPlayer().isSneaking()) {
                 if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null && !isInList) {
-                    /*if (event.getPlayer().getItemInUse().) TODO DROPPING LOGIC HERE */
-                    clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
-                    isInList = true;
+                    if (event.getPlayer().getActiveItem().getType() == Material.PAPER && customModelDataInfo.contains(event.getPlayer().getActiveItem().getItemMeta().getCustomModelData())) {
+
+                        game.drop(
+                                checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),
+                                commandHandler.getBoardList().get(event.getPlayer().getUniqueId())),
+                                event.getPlayer().getItemInUse().getItemMeta().getCustomModelData(),
+                                event.getPlayer().getUniqueId()
+                        );
+
+                    } else {
+                        clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
+                        isInList = true;
+                    }
                 } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())) != null) {
                     clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId())));
                     game.move(event.getPlayer(), false);

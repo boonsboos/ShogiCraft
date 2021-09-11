@@ -9,21 +9,20 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
+import xyz.mrsherobrine.ShogiCraft.ShogiCraft;
 import xyz.mrsherobrine.ShogiCraft.shogi.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.shogi.pieces.*;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class ArmorStandCreator {
 
     public static NamespacedKey ownerKey;
 
-    public ArmorStandCreator(JavaPlugin plugin) {
-        ownerKey = new NamespacedKey(plugin, "PieceOwner");
+    public ArmorStandCreator() {
+        ownerKey = new NamespacedKey(ShogiCraft.getPlugin(ShogiCraft.class), "PieceOwner");
     }
 
     public Piece createPiece(String type, Tile tile, UUID uuid, int yaw) {

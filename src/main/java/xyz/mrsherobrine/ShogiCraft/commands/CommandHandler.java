@@ -28,16 +28,16 @@ public class CommandHandler implements CommandExecutor {
 
     private LocationChecker locCheck;
     private ArmorStandCreator creator;
-    private static final Map<UUID, Tile[][]> boardList = new HashMap<>();
+    public static final Map<UUID, Tile[][]> boardList = new HashMap<>();
     public static final Map<UUID, Boolean> isInGame = new HashMap<>();
 
     private Game game;
 
     public CommandHandler(JavaPlugin plugin) {
         this.logger = plugin.getLogger();
-        this.locCheck = new LocationChecker(logger);
+        this.locCheck = new LocationChecker();
         this.game = new Game();
-        this.creator = new ArmorStandCreator(plugin);
+        this.creator = new ArmorStandCreator();
     }
 
     @Override

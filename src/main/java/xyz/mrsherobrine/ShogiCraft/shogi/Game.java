@@ -2,19 +2,32 @@ package xyz.mrsherobrine.ShogiCraft.shogi;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import xyz.mrsherobrine.ShogiCraft.commands.CommandHandler;
 import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
+import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
 import java.util.Map;
 import java.util.UUID;
 
 public class Game {
+
+    private ArmorStandCreator creator;
+    private LocationChecker checker;
+
+    public Game() {
+        this.checker = new LocationChecker();
+        this.creator = new ArmorStandCreator();
+    }
 
     public void move(Player player, boolean sneaking) {
 
@@ -45,7 +58,7 @@ public class Game {
 
                     ItemStack item = from.getPiece().getEntity().getItem(EquipmentSlot.HEAD);
                     ItemMeta meta = item.getItemMeta();
-                    meta.setCustomModelData(getCorrectTextureFromType(from.getPiece().getType()));
+                    meta.setCustomModelData(getPromotedTextureFromType(from.getPiece().getType()));
                     item.setItemMeta(meta);
                     from.getPiece().getEntity().setItem(EquipmentSlot.HEAD, item);
                     //TODO this can all be done in a different method
@@ -80,7 +93,7 @@ public class Game {
         Listeners.clickedTileList.remove(player.getUniqueId()+"2");
     }
 
-    public int getCorrectTextureFromType(PieceType type) {
+    public int getPromotedTextureFromType(PieceType type) {
         //this is for the promoted textures
         return switch (type) {
             case P -> 5;
@@ -103,8 +116,54 @@ public class Game {
 
     public void capture(PieceType type, UUID uuid) {
 
+        Player p = Bukkit.getPlayer(uuid);
 
+        ItemStack item = new ItemStack(Material.PAPER);
+        ItemMeta meta = item.getItemMeta();
+        meta.setCustomModelData(getTextureFromType(type));
 
+        if (p.getInventory().firstEmpty()== -1) {
+            Location pLoc = p.getLocation();
+            World w = p.getWorld();
+            w.dropItemNaturally(pLoc, item);
+        } else {
+            p.getInventory().addItem(item);
+        }
+
+    }
+
+    public void drop(Tile destination, int customModelData, UUID uuid) {
+
+        //TODO get which side which player is on
+        creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, 0);
+
+    }
+
+    public String getTypeFromTexture(int customModelData) {
+        return switch(customModelData) {
+            case 1 -> "P";
+            case 2 -> "L";
+            case 4 -> "R";
+            case 8 -> "S";
+            case 9 -> "G";
+            case 10 -> "N";
+            case 12 -> "B";
+            default -> throw new IllegalStateException("Unexpected value: " + customModelData);
+        };
+    }
+
+    public int getTextureFromType(PieceType type) {
+        //this is for the promoted textures
+        return switch (type) {
+            case P -> 1;
+            case R -> 4;
+            case L -> 2;
+            case N -> 10;
+            case B -> 12;
+            case S -> 8;
+            case G -> 9;
+            default -> throw new IllegalStateException("Unexpected value: "+ type);
+        };
     }
 
 }

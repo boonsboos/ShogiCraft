@@ -59,8 +59,7 @@ public class LocationChecker {
 
     );
 
-    public LocationChecker(Logger logger) {
-        this.logger = logger;
+    public LocationChecker() {
     }
 
     public boolean checkLocation(Location location) {
