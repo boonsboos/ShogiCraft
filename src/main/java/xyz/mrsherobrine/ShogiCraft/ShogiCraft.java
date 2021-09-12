@@ -6,12 +6,12 @@ import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
 
 public class ShogiCraft extends JavaPlugin {
 
-    @Override
-    public void onEnable() {
-
-        getServer().getPluginManager().registerEvents(new Listeners(this) ,this);
-        getCommand("shogi").setExecutor(new CommandHandler(this));
-
-    }
+  @Override
+  public void onEnable() {
+    
+    getServer().getPluginManager().registerEvents(new Listeners(this) ,this);
+    getCommand("shogi").setExecutor(new CommandHandler(this));
+    
+  }
 
 }

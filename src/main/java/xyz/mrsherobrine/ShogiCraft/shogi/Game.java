@@ -2,6 +2,7 @@ package xyz.mrsherobrine.ShogiCraft.shogi;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
+import xyz.mrsherobrine.ShogiCraft.shogi.PieceType;
 
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +30,7 @@ public class Game {
         this.creator = new ArmorStandCreator();
     }
 
-    public void move(Player player, boolean sneaking) {
+    public void move(Player player, boolean sneaking, Tile[][] board) {
 
         Map<String, Tile> tiles = Listeners.clickedTileList;
         Tile from = tiles.get(player.getUniqueId()+"1");
@@ -118,7 +120,7 @@ public class Game {
 
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName();
+        meta.displayName(getFullTypeNameAsComponent(type));
         meta.setCustomModelData(getTextureFromType(type));
         item.setItemMeta(meta);
 
@@ -134,9 +136,30 @@ public class Game {
 
     public void drop(Tile destination, int customModelData, UUID uuid) {
 
-        //TODO get which side which player is on to influence the yaw
+        //TODO get which side which player is on to influence the yaw (eg which is gote and which is sente)
         destination.setPiece(creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, 0));
 
+    }
+
+    //weewoo ugly alert
+    public void setupGame(Tile[][] board, UUID player1, UUID player2) {
+        for (int x = 0; x < 9; x++){
+            board[3][x].setPiece(creator.createPiece("P", board[3][x], player1, Side.GOTE));
+        }
+    }
+
+    //welcome to utility method land
+    public Component getFullTypeNameAsComponent(PieceType type) {
+        return switch(type) {
+            case B -> Component.text("Bishop").decoration(TextDecoration.ITALIC, false);
+            case G -> Component.text("Gold General", NamedTextColor.GOLD).decoration(TextDecoration.ITALIC, false);
+            case K -> Component.text("King").decoration(TextDecoration.ITALIC, false);
+            case L -> Component.text("Lance").decoration(TextDecoration.ITALIC, false);
+            case N -> Component.text("Knight").decoration(TextDecoration.ITALIC, false);
+            case P -> Component.text("Pawn").decoration(TextDecoration.ITALIC, false);
+            case R -> Component.text("Rook").decoration(TextDecoration.ITALIC, false);
+            case S -> Component.text("Silver General", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false);
+        };
     }
 
     public String getTypeFromTexture(int customModelData) {
@@ -165,8 +188,5 @@ public class Game {
         };
     }
 
-    public void setupGame(Tile[][] board) {
-        //TODO: make this work
-    }
 
 }

@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.mrsherobrine.ShogiCraft.shogi.Board;
 import xyz.mrsherobrine.ShogiCraft.shogi.Game;
+import xyz.mrsherobrine.ShogiCraft.shogi.Side;
 import xyz.mrsherobrine.ShogiCraft.shogi.challenge.GameChallenge;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
@@ -31,6 +32,7 @@ public class CommandHandler implements CommandExecutor {
     public static final Map<UUID, Board> boardList = new HashMap<>();
     public static final Map<UUID, Boolean> isInGame = new HashMap<>();
     public static final Map<UUID, UUID> challenges = new HashMap<>();
+    public static final Map<UUID, Side> players = new HashMap<>();
 
     private Game game;
 
@@ -90,9 +92,13 @@ public class CommandHandler implements CommandExecutor {
 
 
                             if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
+
                                 boardList.put(player.getUniqueId(), new Board(player.getUniqueId(), player.getLocation()));
                                 player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
+
                                 isInGame.put(player.getUniqueId(), true);
+                                isInGame.put(challenges.get(player.getUniqueId()), true);
+
                             } else if (boardList.containsKey(player.getUniqueId())) {
                                 player.sendMessage(Component.text("You have a board! Run /shogi remove if you want to get rid of it.", NamedTextColor.YELLOW));
                             } else {
@@ -101,7 +107,7 @@ public class CommandHandler implements CommandExecutor {
                             }
 
                             if (boardList.containsKey(player.getUniqueId())) {
-                                game.setupGame(boardList.get(player.getUniqueId()).getBoard());
+                                game.setupGame(boardList.get(player.getUniqueId()).getBoard(), challenges.get(player.getUniqueId()), player.getUniqueId());
                             } else {
                                 player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                             }
