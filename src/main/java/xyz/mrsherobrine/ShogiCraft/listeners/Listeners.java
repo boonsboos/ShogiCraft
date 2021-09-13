@@ -40,7 +40,7 @@ public class Listeners implements Listener {
 
         //TODO only do this if players are in a shogi match
 
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND) /*isInGame.containsKey(event.getPlayer().getUniqueID())*/) {
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND) && CommandHandler.isInGame.containsKey(event.getPlayer().getUniqueId())) {
 
             //if a player is not sneaking, run normal moves or drops
             if (!event.getPlayer().isSneaking()) {
@@ -53,7 +53,7 @@ public class Listeners implements Listener {
                                         commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()
                                 ),
                                 event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getCustomModelData(),
-                                UUID.randomUUID()
+                                event.getPlayer().getUniqueId()
                         );
 
                         event.getPlayer().getInventory().getItemInMainHand().subtract();

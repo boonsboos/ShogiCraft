@@ -144,8 +144,13 @@ public class Game {
     //weewoo ugly alert
     public void setupGame(Tile[][] board, UUID player1, UUID player2) {
         for (int x = 0; x < 9; x++){
-            board[3][x].setPiece(creator.createPiece("P", board[3][x], player1, Side.GOTE));
+            board[2][x].setPiece(creator.createPiece("P", board[3][x], player1, Side.GOTE));
+            board[6][x].setPiece(creator.createPiece("P", board[6][x], player2, Side.SENTE));
         }
+        board[0][4].setPiece(creator.createPiece("SK", board[0][4], player2, Side.SENTE));
+        board[8][4].setPiece(creator.createPiece("GK", board[8][4], player1, Side.GOTE));
+        board[1][2].setPiece(creator.createPiece("R", board[1][2], player1, Side.GOTE));
+        board[7][7].setPiece(creator.createPiece("R", board[7][7], player2, Side.SENTE));
     }
 
     //welcome to utility method land

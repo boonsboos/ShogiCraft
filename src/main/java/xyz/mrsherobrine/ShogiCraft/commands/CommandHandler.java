@@ -57,13 +57,13 @@ public class CommandHandler implements CommandExecutor {
                         break;
                     case "challenge":
 
-                        //TODO: check for player
                         if (strings.length == 2) {
 
                             //checks if it's valid player
                             if (Bukkit.getPlayer(strings[1]) != null && !challenges.containsValue(player.getUniqueId())) {
-                                challenge.challengeSend(player.getName(), strings[1]);
+                                logger.info(Bukkit.getPlayerUniqueId(strings[1]).toString()+" has a UUID");
                                 challenges.put(Bukkit.getPlayerUniqueId(strings[1]), player.getUniqueId());
+                                challenge.challengeSend(player.getName(), strings[1]);
                             } else if (Bukkit.getPlayer(strings[1]) == null && !strings[1].matches("(deny|accept)")) {
                                 player.sendMessage(Component.text("Player not found or not online!", NamedTextColor.RED));
                                 break;
@@ -74,6 +74,8 @@ public class CommandHandler implements CommandExecutor {
                                 challenge.challengeAccept(player.getName(), challenges.get(player.getUniqueId()));
                                 //so i can make sure they're the only ones at that board.
                                 boardList.put(player.getUniqueId(), boardList.get(challenges.get(player.getUniqueId())));
+                                isInGame.put(player.getUniqueId(), true);
+                                isInGame.put(challenges.get(player.getUniqueId()), true);
                                 break;
                             } else if (strings[1].contains("accept") && !challenges.containsKey(player.getUniqueId())) {
                                 player.sendMessage(Component.text("You have no challenges!", NamedTextColor.YELLOW));
@@ -88,7 +90,6 @@ public class CommandHandler implements CommandExecutor {
                                 player.sendMessage(Component.text("You have no challenges!", NamedTextColor.YELLOW));
                                 break;
                             }
-
 
 
                             if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
@@ -106,7 +107,9 @@ public class CommandHandler implements CommandExecutor {
                                 break;
                             }
 
-                            if (boardList.containsKey(player.getUniqueId())) {
+                            logger.info(player.getUniqueId()+"???");
+
+                            if (boardList.containsKey(player.getUniqueId()) && challenges.containsValue(player.getUniqueId()) && isInGame.containsKey(player.getUniqueId())) {
                                 game.setupGame(boardList.get(player.getUniqueId()).getBoard(), challenges.get(player.getUniqueId()), player.getUniqueId());
                             } else {
                                 player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
