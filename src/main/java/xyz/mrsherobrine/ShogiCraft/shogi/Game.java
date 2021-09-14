@@ -136,21 +136,24 @@ public class Game {
 
     public void drop(Tile destination, int customModelData, UUID uuid) {
 
-        //TODO get which side which player is on to influence the yaw (eg which is gote and which is sente)
-        destination.setPiece(creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, 0));
-
+        //TODO get which side which player is on to influence the yaw (eg which is gote and which is sente) right here vvv
+        if (destination.getPiece() != null) {
+            destination.setPiece(creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, 0));
+        } else {
+            Bukkit.getPlayer(uuid).sendMessage(Component.text("Can't drop that there!", NamedTextColor.RED));
+        }
     }
 
     //weewoo ugly alert
     public void setupGame(Tile[][] board, UUID player1, UUID player2) {
         for (int x = 0; x < 9; x++){
-            board[2][x].setPiece(creator.createPiece("P", board[3][x], player1, Side.GOTE));
-            board[6][x].setPiece(creator.createPiece("P", board[6][x], player2, Side.SENTE));
+            board[2][x].setPiece(creator.createPiece("P", board[2][x], player1, Side.GOTE.getAngle()));
+            board[6][x].setPiece(creator.createPiece("P", board[6][x], player2, Side.SENTE.getAngle()));
         }
-        board[0][4].setPiece(creator.createPiece("SK", board[0][4], player2, Side.SENTE));
-        board[8][4].setPiece(creator.createPiece("GK", board[8][4], player1, Side.GOTE));
-        board[1][2].setPiece(creator.createPiece("R", board[1][2], player1, Side.GOTE));
-        board[7][7].setPiece(creator.createPiece("R", board[7][7], player2, Side.SENTE));
+        board[8][4].setPiece(creator.createPiece("SK", board[8][4], player2, Side.SENTE.getAngle()));
+        board[0][4].setPiece(creator.createPiece("GK", board[0][4], player1, Side.GOTE.getAngle()));
+        board[1][2].setPiece(creator.createPiece("R", board[1][2], player1, Side.GOTE.getAngle()));
+        board[7][7].setPiece(creator.createPiece("R", board[7][7], player2, Side.SENTE.getAngle()));
     }
 
     //welcome to utility method land

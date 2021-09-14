@@ -55,6 +55,24 @@ public class CommandHandler implements CommandExecutor {
                         isInGame.remove(player.getUniqueId());
                         boardList.remove(player.getUniqueId());
                         break;
+                    case "create":
+
+                        if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
+
+                            boardList.put(player.getUniqueId(), new Board(player.getUniqueId(), player.getLocation()));
+                            player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
+
+                            isInGame.put(player.getUniqueId(), true);
+                            isInGame.put(challenges.get(player.getUniqueId()), true);
+
+                        } else if (boardList.containsKey(player.getUniqueId())) {
+                            player.sendMessage(Component.text("You have a board! Run /shogi remove if you want to get rid of it.", NamedTextColor.YELLOW));
+                        } else {
+                            player.sendMessage(Component.text("Invalid board! Please check if it's all wood and 9x9. Are you standing in the center?", NamedTextColor.RED));
+                            break;
+                        }
+
+                        break;
                     case "challenge":
 
                         if (strings.length == 2) {
@@ -76,6 +94,13 @@ public class CommandHandler implements CommandExecutor {
                                 boardList.put(player.getUniqueId(), boardList.get(challenges.get(player.getUniqueId())));
                                 isInGame.put(player.getUniqueId(), true);
                                 isInGame.put(challenges.get(player.getUniqueId()), true);
+
+                                if (challenges.containsValue(player.getUniqueId())) {
+                                    game.setupGame(boardList.get(player.getUniqueId()).getBoard(), challenges.get(player.getUniqueId()), player.getUniqueId());
+                                } else {
+                                    player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
+                                }
+
                                 break;
                             } else if (strings[1].contains("accept") && !challenges.containsKey(player.getUniqueId())) {
                                 player.sendMessage(Component.text("You have no challenges!", NamedTextColor.YELLOW));
@@ -91,29 +116,7 @@ public class CommandHandler implements CommandExecutor {
                                 break;
                             }
 
-
-                            if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
-
-                                boardList.put(player.getUniqueId(), new Board(player.getUniqueId(), player.getLocation()));
-                                player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
-
-                                isInGame.put(player.getUniqueId(), true);
-                                isInGame.put(challenges.get(player.getUniqueId()), true);
-
-                            } else if (boardList.containsKey(player.getUniqueId())) {
-                                player.sendMessage(Component.text("You have a board! Run /shogi remove if you want to get rid of it.", NamedTextColor.YELLOW));
-                            } else {
-                                player.sendMessage(Component.text("Invalid board! Please check if it's all wood and 9x9. Are you standing in the center?", NamedTextColor.RED));
-                                break;
-                            }
-
                             logger.info(player.getUniqueId()+"???");
-
-                            if (boardList.containsKey(player.getUniqueId()) && challenges.containsValue(player.getUniqueId()) && isInGame.containsKey(player.getUniqueId())) {
-                                game.setupGame(boardList.get(player.getUniqueId()).getBoard(), challenges.get(player.getUniqueId()), player.getUniqueId());
-                            } else {
-                                player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
-                            }
 
                         } else {
                             return false;

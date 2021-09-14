@@ -1,8 +1,18 @@
 package xyz.mrsherobrine.ShogiCraft.shogi;
 
-public class Side {
+public enum Side {
 
-    public static int GOTE = 0;
-    public static int SENTE = 180;
+    GOTE(0),
+    SENTE(180);
+
+    private final int sideYaw;
+
+    Side(int side) {
+        this.sideYaw = side;
+    }
+
+    public int getAngle() {
+        return this.sideYaw;
+    }
 
 }
