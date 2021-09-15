@@ -1,4 +1,4 @@
-package xyz.mrsherobrine.ShogiCraft.shogi;
+package xyz.mrsherobrine.ShogiCraft.shogi.enums;
 
 public enum PieceType {
 

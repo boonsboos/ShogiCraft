@@ -13,6 +13,7 @@ import org.bukkit.util.EulerAngle;
 import xyz.mrsherobrine.ShogiCraft.ShogiCraft;
 import xyz.mrsherobrine.ShogiCraft.shogi.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.DefaultPieceTexture;
 import xyz.mrsherobrine.ShogiCraft.shogi.pieces.*;
 
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class ArmorStandCreator {
         ownerKey = new NamespacedKey(ShogiCraft.getPlugin(ShogiCraft.class), "PieceOwner");
     }
 
-    public Piece createPiece(String type, Tile tile, UUID uuid, int yaw) {
+    public Piece createPiece(DefaultPieceTexture type, Tile tile, UUID uuid, int yaw) {
 
         Piece piece = null;
 
@@ -45,47 +46,47 @@ public class ArmorStandCreator {
         ItemMeta meta = paper.getItemMeta();
 
         switch (type) {
-            case "P" -> {
+            case P -> {
                 //pawn
                 piece = new Pawn(uuid, armorStand);
                 meta.setCustomModelData(1);
             }
-            case "L" -> {
+            case L -> {
                 //lance
                 piece = new Lance(uuid, armorStand);
                 meta.setCustomModelData(2);
             }
-            case "GK" -> {
+            case GK -> {
                 //gote king
                 piece = new King(uuid, armorStand);
                 meta.setCustomModelData(3);
             }
-            case "R" -> {
+            case R -> {
                 //rook
                 piece = new Rook(uuid, armorStand);
                 meta.setCustomModelData(4);
             }
-            case "S" -> {
+            case S -> {
                 //silver
                 piece = new Silver(uuid, armorStand);
                 meta.setCustomModelData(8);
             }
-            case "G" -> {
+            case G -> {
                 //gold
                 piece = new Gold(uuid, armorStand);
                 meta.setCustomModelData(9);
             }
-            case "N" -> {
+            case N -> {
                 //knight
                 piece = new Knight(uuid, armorStand);
                 meta.setCustomModelData(10);
             }
-            case "B" -> {
+            case B -> {
                 //bishop
                 piece = new Bishop(uuid, armorStand);
                 meta.setCustomModelData(12);
             }
-            case "SK" -> {
+            case SK -> {
                 piece = new King(uuid, armorStand);
                 meta.setCustomModelData(15);
             }

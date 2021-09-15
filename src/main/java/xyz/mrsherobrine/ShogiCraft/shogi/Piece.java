@@ -1,6 +1,7 @@
 package xyz.mrsherobrine.ShogiCraft.shogi;
 
 import org.bukkit.entity.ArmorStand;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.PieceType;
 
 import java.util.UUID;
 

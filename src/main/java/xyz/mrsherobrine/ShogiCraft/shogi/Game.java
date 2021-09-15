@@ -13,9 +13,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.DefaultPieceTexture;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.Side;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
-import xyz.mrsherobrine.ShogiCraft.shogi.PieceType;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.PieceType;
 
 import java.util.Map;
 import java.util.UUID;
@@ -146,14 +148,26 @@ public class Game {
 
     //weewoo ugly alert
     public void setupGame(Tile[][] board, UUID player1, UUID player2) {
+
+        //pawns
         for (int x = 0; x < 9; x++){
-            board[2][x].setPiece(creator.createPiece("P", board[2][x], player1, Side.GOTE.getAngle()));
-            board[6][x].setPiece(creator.createPiece("P", board[6][x], player2, Side.SENTE.getAngle()));
+            board[2][x].setPiece(creator.createPiece(DefaultPieceTexture.P, board[2][x], player1, Side.GOTE.getAngle()));
+            board[6][x].setPiece(creator.createPiece(DefaultPieceTexture.P, board[6][x], player2, Side.SENTE.getAngle()));
         }
-        board[8][4].setPiece(creator.createPiece("SK", board[8][4], player2, Side.SENTE.getAngle()));
-        board[0][4].setPiece(creator.createPiece("GK", board[0][4], player1, Side.GOTE.getAngle()));
-        board[1][2].setPiece(creator.createPiece("R", board[1][2], player1, Side.GOTE.getAngle()));
-        board[7][7].setPiece(creator.createPiece("R", board[7][7], player2, Side.SENTE.getAngle()));
+        //kings
+        board[8][4].setPiece(creator.createPiece(DefaultPieceTexture.SK, board[8][4], player2, Side.SENTE.getAngle()));
+        board[0][4].setPiece(creator.createPiece(DefaultPieceTexture.GK, board[0][4], player1, Side.GOTE.getAngle()));
+
+        //rooks
+        board[1][2].setPiece(creator.createPiece(DefaultPieceTexture.R, board[1][2], player1, Side.GOTE.getAngle()));
+        board[7][7].setPiece(creator.createPiece(DefaultPieceTexture.R, board[7][7], player2, Side.SENTE.getAngle()));
+
+        //bishops
+        board[7][1].setPiece(creator.createPiece(DefaultPieceTexture.B, board[7][1], player2, Side.SENTE.getAngle()));
+        board[1][7].setPiece(creator.createPiece(DefaultPieceTexture.B, board[1][7], player1, Side.GOTE.getAngle()));
+
+        //silver
+        board[0][3].setPiece(creator.createPiece(DefaultPieceTexture.S, board[0][3], player1, Side.GOTE.getAngle()));
     }
 
     //welcome to utility method land
@@ -170,15 +184,15 @@ public class Game {
         };
     }
 
-    public String getTypeFromTexture(int customModelData) {
+    public DefaultPieceTexture getTypeFromTexture(int customModelData) {
         return switch(customModelData) {
-            case 1 -> "P";
-            case 2 -> "L";
-            case 4 -> "R";
-            case 8 -> "S";
-            case 9 -> "G";
-            case 10 -> "N";
-            case 12 -> "B";
+            case 1 -> DefaultPieceTexture.P;
+            case 2 -> DefaultPieceTexture.L;
+            case 4 -> DefaultPieceTexture.R;
+            case 8 -> DefaultPieceTexture.S;
+            case 9 -> DefaultPieceTexture.G;
+            case 10 -> DefaultPieceTexture.N;
+            case 12 -> DefaultPieceTexture.B;
             default -> throw new IllegalStateException("Unexpected value: " + customModelData);
         };
     }

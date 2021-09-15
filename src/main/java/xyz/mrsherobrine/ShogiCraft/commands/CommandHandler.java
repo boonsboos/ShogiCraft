@@ -14,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.mrsherobrine.ShogiCraft.shogi.Board;
 import xyz.mrsherobrine.ShogiCraft.shogi.Game;
-import xyz.mrsherobrine.ShogiCraft.shogi.Side;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.Side;
 import xyz.mrsherobrine.ShogiCraft.shogi.challenge.GameChallenge;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
