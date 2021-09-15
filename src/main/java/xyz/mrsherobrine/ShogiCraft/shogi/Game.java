@@ -95,27 +95,6 @@ public class Game {
         Listeners.clickedTileList.remove(player.getUniqueId()+"2");
     }
 
-    public int getPromotedTextureFromType(PieceType type) {
-        //this is for the promoted textures
-        return switch (type) {
-            case P -> 5;
-            case R -> 6;
-            case L -> 7;
-            case N -> 11;
-            case B -> 13;
-            case S -> 15;
-            default -> 3;
-        };
-    }
-
-    public int getRoundedAngle(int angle) {
-        if (angle >=180) {
-            return 180;
-        } else {
-            return 0;
-        }
-    }
-
     public void capture(PieceType type, UUID uuid) {
 
         Player p = Bukkit.getPlayer(uuid);
@@ -210,5 +189,25 @@ public class Game {
         };
     }
 
+    public int getPromotedTextureFromType(PieceType type) {
+        //this is for the promoted textures
+        return switch (type) {
+            case P -> 5;
+            case R -> 6;
+            case L -> 7;
+            case N -> 11;
+            case B -> 13;
+            case S -> 14;
+            default -> 3;
+        };
+    }
+
+    public int getRoundedAngle(int angle) {
+        if (angle >=180) {
+            return 180;
+        } else {
+            return 0;
+        }
+    }
 
 }
