@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
-import xyz.mrsherobrine.ShogiCraft.shogi.enums.DefaultPieceTexture;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.enums.Side;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
@@ -42,7 +42,9 @@ public class Game {
         toLocation.setY(to.getLocation().getY());
         toLocation.setYaw(getRoundedAngle((int) from.getLocation().getYaw()));
 
+        //promotion
         if (sneaking) {
+
                 if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().toString().matches("(K|G)")) {
 
                     //check if piece belongs to player who's moving
@@ -71,6 +73,8 @@ public class Game {
                 } else {
                     player.sendMessage(Component.text("Bad move or can't promote!", NamedTextColor.RED));
                 }
+
+        //regular movement
         } else {
             if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId())) {
 
@@ -126,27 +130,49 @@ public class Game {
     }
 
     //weewoo ugly alert
+    //TODO put this in an async runnable?
     public void setupGame(Tile[][] board, UUID player1, UUID player2) {
 
         //pawns
         for (int x = 0; x < 9; x++){
-            board[2][x].setPiece(creator.createPiece(DefaultPieceTexture.P, board[2][x], player1, Side.GOTE.getAngle()));
-            board[6][x].setPiece(creator.createPiece(DefaultPieceTexture.P, board[6][x], player2, Side.SENTE.getAngle()));
+            board[2][x].setPiece(creator.createPiece(Piece.P, board[2][x], player1, Side.GOTE.get()));
+            board[6][x].setPiece(creator.createPiece(Piece.P, board[6][x], player2, Side.SENTE.get()));
         }
         //kings
-        board[8][4].setPiece(creator.createPiece(DefaultPieceTexture.SK, board[8][4], player2, Side.SENTE.getAngle()));
-        board[0][4].setPiece(creator.createPiece(DefaultPieceTexture.GK, board[0][4], player1, Side.GOTE.getAngle()));
+        board[8][4].setPiece(creator.createPiece(Piece.SK, board[8][4], player2, Side.SENTE.get()));
+        board[0][4].setPiece(creator.createPiece(Piece.GK, board[0][4], player1, Side.GOTE.get()));
 
         //rooks
-        board[1][2].setPiece(creator.createPiece(DefaultPieceTexture.R, board[1][2], player1, Side.GOTE.getAngle()));
-        board[7][7].setPiece(creator.createPiece(DefaultPieceTexture.R, board[7][7], player2, Side.SENTE.getAngle()));
+        board[1][1].setPiece(creator.createPiece(Piece.R, board[1][1], player1, Side.GOTE.get()));
+        board[7][7].setPiece(creator.createPiece(Piece.R, board[7][7], player2, Side.SENTE.get()));
 
         //bishops
-        board[7][1].setPiece(creator.createPiece(DefaultPieceTexture.B, board[7][1], player2, Side.SENTE.getAngle()));
-        board[1][7].setPiece(creator.createPiece(DefaultPieceTexture.B, board[1][7], player1, Side.GOTE.getAngle()));
+        board[7][1].setPiece(creator.createPiece(Piece.B, board[7][1], player2, Side.SENTE.get()));
+        board[1][7].setPiece(creator.createPiece(Piece.B, board[1][7], player1, Side.GOTE.get()));
 
         //silver
-        board[0][3].setPiece(creator.createPiece(DefaultPieceTexture.S, board[0][3], player1, Side.GOTE.getAngle()));
+        board[0][2].setPiece(creator.createPiece(Piece.S, board[0][2], player1, Side.GOTE.get()));
+        board[0][6].setPiece(creator.createPiece(Piece.S, board[0][6], player1, Side.GOTE.get()));
+        board[8][2].setPiece(creator.createPiece(Piece.S, board[8][2], player2, Side.SENTE.get()));
+        board[8][6].setPiece(creator.createPiece(Piece.S, board[8][6], player2, Side.SENTE.get()));
+
+        //gold
+        board[0][3].setPiece(creator.createPiece(Piece.G, board[0][3], player1, Side.GOTE.get()));
+        board[0][5].setPiece(creator.createPiece(Piece.G, board[0][5], player1, Side.GOTE.get()));
+        board[8][3].setPiece(creator.createPiece(Piece.G, board[8][3], player2, Side.SENTE.get()));
+        board[8][5].setPiece(creator.createPiece(Piece.G, board[8][5], player2, Side.SENTE.get()));
+
+        //knight
+        board[0][1].setPiece(creator.createPiece(Piece.N, board[0][1], player1, Side.GOTE.get()));
+        board[0][7].setPiece(creator.createPiece(Piece.N, board[0][7], player1, Side.GOTE.get()));
+        board[8][1].setPiece(creator.createPiece(Piece.N, board[8][1], player2, Side.SENTE.get()));
+        board[8][7].setPiece(creator.createPiece(Piece.N, board[8][7], player2, Side.SENTE.get()));
+
+        //lance
+        board[0][0].setPiece(creator.createPiece(Piece.L, board[0][0], player1, Side.GOTE.get()));
+        board[0][8].setPiece(creator.createPiece(Piece.L, board[0][8], player1, Side.GOTE.get()));
+        board[8][0].setPiece(creator.createPiece(Piece.L, board[8][0], player2, Side.SENTE.get()));
+        board[8][8].setPiece(creator.createPiece(Piece.L, board[8][8], player2, Side.SENTE.get()));
     }
 
     //welcome to utility method land
@@ -163,15 +189,15 @@ public class Game {
         };
     }
 
-    public DefaultPieceTexture getTypeFromTexture(int customModelData) {
+    public Piece getTypeFromTexture(int customModelData) {
         return switch(customModelData) {
-            case 1 -> DefaultPieceTexture.P;
-            case 2 -> DefaultPieceTexture.L;
-            case 4 -> DefaultPieceTexture.R;
-            case 8 -> DefaultPieceTexture.S;
-            case 9 -> DefaultPieceTexture.G;
-            case 10 -> DefaultPieceTexture.N;
-            case 12 -> DefaultPieceTexture.B;
+            case 1 -> Piece.P;
+            case 2 -> Piece.L;
+            case 4 -> Piece.R;
+            case 8 -> Piece.S;
+            case 9 -> Piece.G;
+            case 10 -> Piece.N;
+            case 12 -> Piece.B;
             default -> throw new IllegalStateException("Unexpected value: " + customModelData);
         };
     }
@@ -190,7 +216,6 @@ public class Game {
     }
 
     public int getPromotedTextureFromType(PieceType type) {
-        //this is for the promoted textures
         return switch (type) {
             case P -> 5;
             case R -> 6;

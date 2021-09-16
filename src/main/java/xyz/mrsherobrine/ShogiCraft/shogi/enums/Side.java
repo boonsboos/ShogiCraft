@@ -11,7 +11,7 @@ public enum Side {
         this.sideYaw = side;
     }
 
-    public int getAngle() {
+    public int get() {
         return this.sideYaw;
     }
 

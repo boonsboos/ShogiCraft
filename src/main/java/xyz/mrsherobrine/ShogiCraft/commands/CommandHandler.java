@@ -78,7 +78,9 @@ public class CommandHandler implements CommandExecutor {
                         if (strings.length == 2) {
 
                             //checks if it's valid player
-                            if (Bukkit.getPlayer(strings[1]) != null && !challenges.containsValue(player.getUniqueId())) {
+                            if (!boardList.containsKey(player.getUniqueId())) {
+                               player.sendMessage(Component.text("Hey! You don't have a board yet! Run /shogi create at your board before you try again", NamedTextColor.YELLOW));
+                            } else if (Bukkit.getPlayer(strings[1]) != null && !challenges.containsValue(player.getUniqueId()) && boardList.containsKey(player.getUniqueId())) {
                                 logger.info(Bukkit.getPlayerUniqueId(strings[1]).toString()+" has a UUID");
                                 challenges.put(Bukkit.getPlayerUniqueId(strings[1]), player.getUniqueId());
                                 challenge.challengeSend(player.getName(), strings[1]);
@@ -95,13 +97,14 @@ public class CommandHandler implements CommandExecutor {
                                 isInGame.put(player.getUniqueId(), true);
                                 isInGame.put(challenges.get(player.getUniqueId()), true);
 
-                                if (challenges.containsValue(player.getUniqueId())) {
+                                if (challenges.containsValue(player.getUniqueId()) && boardList.containsKey(player.getUniqueId())) {
                                     game.setupGame(boardList.get(player.getUniqueId()).getBoard(), challenges.get(player.getUniqueId()), player.getUniqueId());
                                 } else {
                                     player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                                 }
 
                                 break;
+
                             } else if (strings[1].contains("accept") && !challenges.containsKey(player.getUniqueId())) {
                                 player.sendMessage(Component.text("You have no challenges!", NamedTextColor.YELLOW));
                                 break;

@@ -1,6 +1,6 @@
 package xyz.mrsherobrine.ShogiCraft.shogi.enums;
 
-public enum DefaultPieceTexture {
+public enum Piece {
 
     GK,//gote king
     SK,//sente king

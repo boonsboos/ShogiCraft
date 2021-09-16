@@ -11,9 +11,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.EulerAngle;
 import xyz.mrsherobrine.ShogiCraft.ShogiCraft;
-import xyz.mrsherobrine.ShogiCraft.shogi.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
-import xyz.mrsherobrine.ShogiCraft.shogi.enums.DefaultPieceTexture;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.pieces.*;
 
 import java.util.UUID;
@@ -26,9 +25,9 @@ public class ArmorStandCreator {
         ownerKey = new NamespacedKey(ShogiCraft.getPlugin(ShogiCraft.class), "PieceOwner");
     }
 
-    public Piece createPiece(DefaultPieceTexture type, Tile tile, UUID uuid, int yaw) {
+    public xyz.mrsherobrine.ShogiCraft.shogi.Piece createPiece(Piece type, Tile tile, UUID uuid, int yaw) {
 
-        Piece piece = null;
+        xyz.mrsherobrine.ShogiCraft.shogi.Piece piece = null;
 
         Location location = tile.getLocation().toCenterLocation();
         location.setY(location.getBlockY());
