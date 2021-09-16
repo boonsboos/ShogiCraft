@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"2": "item/promotedsilver",
+		"2": "item/promotedsilver"
 	},
 	"elements": [
 		{

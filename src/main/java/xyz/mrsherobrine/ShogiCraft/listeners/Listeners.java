@@ -38,14 +38,12 @@ public class Listeners implements Listener {
     @EventHandler
     public void moveEntity(PlayerInteractEvent event) {
 
-        //TODO only do this if players are in a shogi match
-
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND) && CommandHandler.isInGame.containsKey(event.getPlayer().getUniqueId())) {
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand().equals(EquipmentSlot.HAND) && CommandHandler.turns.containsKey(event.getPlayer().getUniqueId())) {
 
             //if a player is not sneaking, run normal moves or drops
             if (!event.getPlayer().isSneaking()) {
                 if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList) {
-                    if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER /*&& customModelDataInfo.contains(event.getPlayer().getActiveItem().getItemMeta().getCustomModelData())*/) {
+                    if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER && customModelDataInfo.contains(event.getPlayer().getActiveItem().getItemMeta().getCustomModelData())) {
 
                         game.drop(
                                 checker.getClickedTileWithinBoard(
