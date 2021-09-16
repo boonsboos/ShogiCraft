@@ -118,18 +118,28 @@ public class Game {
 
         Player p = Bukkit.getPlayer(uuid);
 
-        ItemStack item = new ItemStack(Material.PAPER);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(getFullTypeNameAsComponent(type));
-        meta.setCustomModelData(getTextureFromType(type));
-        item.setItemMeta(meta);
+        if (type != PieceType.K) {
 
-        if (p.getInventory().firstEmpty()== -1) {
-            Location pLoc = p.getLocation();
-            World w = p.getWorld();
-            w.dropItemNaturally(pLoc, item);
+            ItemStack item = new ItemStack(Material.PAPER);
+            ItemMeta meta = item.getItemMeta();
+            meta.displayName(getFullTypeNameAsComponent(type));
+            meta.setCustomModelData(getTextureFromType(type));
+            item.setItemMeta(meta);
+
+            if (p.getInventory().firstEmpty() == -1) {
+                Location pLoc = p.getLocation();
+                World w = p.getWorld();
+                w.dropItemNaturally(pLoc, item);
+            } else {
+                p.getInventory().addItem(item);
+            }
         } else {
-            p.getInventory().addItem(item);
+            Bukkit.broadcast(
+                    Component.text(p.getName(), NamedTextColor.AQUA, TextDecoration.BOLD)
+                            .append(
+                                    Component.text(" wins against " + Bukkit.getPlayer(CommandHandler.challenges.get(p.getUniqueId())).getName() + "!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)
+                            )
+            );
         }
 
     }
