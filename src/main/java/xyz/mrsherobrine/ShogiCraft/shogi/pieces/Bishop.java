@@ -23,12 +23,12 @@ public class Bishop extends Piece {
 
             if (!isPromoted()) {
 
-                return Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) >= 1 && Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) >= 1;
+                return Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) == Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX());
 
             } else {
 
                 //i really hope this works xd
-                if (Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) >= 1 && Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) >= 1) {
+                if (Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) == Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX())) {
                     return true;
                     //right
                 } else if (from.getLocation().getBlockX() - to.getLocation().getBlockX() == 1 && from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == 0) {
@@ -48,12 +48,12 @@ public class Bishop extends Piece {
 
             if (!isPromoted()) {
 
-                return Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) >= 1 && Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) >= 1;
+                return Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) == Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX());
 
             } else {
 
                 //i really hope this works xd
-                if (Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) >= 1 && Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX()) >= 1) {
+                if (Math.abs(from.getLocation().getBlockZ() - to.getLocation().getBlockZ()) == Math.abs(from.getLocation().getBlockX() - to.getLocation().getBlockX())) {
                     return true;
                     //right
                 } else if (from.getLocation().getBlockX() - to.getLocation().getBlockX() == 1 && from.getLocation().getBlockZ() - to.getLocation().getBlockZ() == 0) {

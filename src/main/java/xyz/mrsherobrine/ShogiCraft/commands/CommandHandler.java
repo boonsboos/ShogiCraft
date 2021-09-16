@@ -74,7 +74,7 @@ public class CommandHandler implements CommandExecutor {
                         if (strings.length == 2) {
 
                             //checks if it's valid player/board already exists
-                            if (!boardList.containsKey(player.getUniqueId())) {
+                            if (!boardList.containsKey(player.getUniqueId()) && Bukkit.getPlayer(strings[1]) != null) {
                                 player.sendMessage(Component.text("Hey! You don't have a board yet! Run /shogi create at your board before you try again", NamedTextColor.YELLOW));
                                break;
                             } else if (Bukkit.getPlayer(strings[1]) != null && !challenges.containsValue(player.getUniqueId()) && boardList.containsKey(player.getUniqueId())) {
@@ -153,6 +153,17 @@ public class CommandHandler implements CommandExecutor {
                                 e.remove();
                             }
                         }
+                        break;
+                    case "surrender":
+                        //removes players from every list
+                        boardList.remove(player.getUniqueId());
+                        boardList.remove(challenges.get(player.getUniqueId()));
+                        turns.remove(challenges.get(player.getUniqueId()));
+                        turns.remove(player.getUniqueId());
+                        players.remove(player.getUniqueId());
+                        players.remove(challenges.get(player.getUniqueId()));
+                        challenges.remove(challenges.get(player.getUniqueId()));
+                        challenges.remove(player.getUniqueId());
                         break;
                     default:
                         commandSender.sendMessage(Component.text("Hmm, that doesn't look like a known command to me...", NamedTextColor.RED));

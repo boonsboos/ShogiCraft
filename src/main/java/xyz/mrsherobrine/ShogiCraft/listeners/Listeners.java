@@ -33,7 +33,9 @@ public class Listeners implements Listener {
 
     public static final Map<String, Tile> clickedTileList = new HashMap<>();
 
-    private boolean isInList = false;
+    private boolean isInList(String uuid) {
+        return clickedTileList.containsKey(uuid);
+    }
 
     @EventHandler
     public void moveEntity(PlayerInteractEvent event) {
@@ -42,7 +44,7 @@ public class Listeners implements Listener {
 
             //if a player is not sneaking, run normal moves or drops
             if (!event.getPlayer().isSneaking()) {
-                if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList) {
+                if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList(event.getPlayer().getUniqueId()+"1")) {
                     if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER && customModelDataInfo.contains(event.getPlayer().getActiveItem().getItemMeta().getCustomModelData())) {
 
                         game.drop(
@@ -58,24 +60,20 @@ public class Listeners implements Listener {
 
                     } else {
                         clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()));
-                        isInList = true;
                     }
                 } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null) {
                     clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()));
                     game.move(event.getPlayer(), false, commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard());
-                    isInList = false;
                 }
 
             //if a player IS sneaking, run the move for promotion. this could be cleaner but idk how to so this is how we're doing it.
 
             } else {
-                if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList) {
+                if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList(event.getPlayer().getUniqueId()+"1")) {
                     clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()));
-                    isInList = true;
                 } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null) {
                     clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()));
                     game.move(event.getPlayer(), true, commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard());
-                    isInList = false;
                 }
             }
         }
