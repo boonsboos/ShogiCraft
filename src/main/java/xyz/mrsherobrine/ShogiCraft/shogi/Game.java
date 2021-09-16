@@ -11,7 +11,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Command;
 import org.bukkit.persistence.PersistentDataType;
+import xyz.mrsherobrine.ShogiCraft.ShogiCraft;
+import xyz.mrsherobrine.ShogiCraft.commands.CommandHandler;
 import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
 import xyz.mrsherobrine.ShogiCraft.shogi.enums.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.enums.Side;
@@ -45,10 +48,10 @@ public class Game {
         //promotion
         if (sneaking) {
 
-                if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().toString().matches("(K|G)")) {
+                if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().toString().matches("(K|G)") && CommandHandler.turns.get(player.getUniqueId())) {
 
                     //check if piece belongs to player who's moving
-                    if (to.getPiece() != null &&  to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
+                    if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
                         player.sendMessage(Component.text("You can't take your own pieces!", NamedTextColor.RED));
                         return;
                     }
@@ -70,15 +73,21 @@ public class Game {
 
                     from.getPiece().setPromoted(true);
                     from.setPiece(null);
+
+                    CommandHandler.turns.replace(player.getUniqueId(), false);
+                    CommandHandler.turns.replace(CommandHandler.challenges.get(player.getUniqueId()), true);
+
+                } else if (!CommandHandler.turns.get(player.getUniqueId())) {
+                    player.sendMessage(Component.text("Not your turn!", NamedTextColor.RED));
                 } else {
                     player.sendMessage(Component.text("Bad move or can't promote!", NamedTextColor.RED));
                 }
 
         //regular movement
         } else {
-            if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId())) {
+            if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && CommandHandler.turns.get(player.getUniqueId())) {
 
-                if (to.getPiece() != null &&  to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
+                if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
                     player.sendMessage(Component.text("You can't take your own pieces!", NamedTextColor.RED));
                     return;
                 }
@@ -91,6 +100,12 @@ public class Game {
                 to.setPiece(from.getPiece());
                 from.getPiece().getEntity().teleportAsync(toLocation);
                 from.setPiece(null);
+
+                CommandHandler.turns.replace(player.getUniqueId(), false);
+                CommandHandler.turns.replace(CommandHandler.challenges.get(player.getUniqueId()), true);
+
+            } else if (!CommandHandler.turns.get(player.getUniqueId())) {
+                player.sendMessage(Component.text("Not your turn!", NamedTextColor.RED));
             } else {
                 player.sendMessage(Component.text("Bad move!", NamedTextColor.RED));
             }
@@ -121,23 +136,22 @@ public class Game {
 
     public void drop(Tile destination, int customModelData, UUID uuid) {
 
-        //TODO get which side which player is on to influence the yaw (eg which is gote and which is sente) right here vvv
         if (destination.getPiece() != null) {
-            destination.setPiece(creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, 0));
+            destination.setPiece(creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, CommandHandler.players.get(uuid).get()));
         } else {
             Bukkit.getPlayer(uuid).sendMessage(Component.text("Can't drop that there!", NamedTextColor.RED));
         }
     }
 
     //weewoo ugly alert
-    //TODO put this in an async runnable?
     public void setupGame(Tile[][] board, UUID player1, UUID player2) {
 
         //pawns
-        for (int x = 0; x < 9; x++){
+        for (int x = 0; x < 9; x++) {
             board[2][x].setPiece(creator.createPiece(Piece.P, board[2][x], player1, Side.GOTE.get()));
             board[6][x].setPiece(creator.createPiece(Piece.P, board[6][x], player2, Side.SENTE.get()));
         }
+
         //kings
         board[8][4].setPiece(creator.createPiece(Piece.SK, board[8][4], player2, Side.SENTE.get()));
         board[0][4].setPiece(creator.createPiece(Piece.GK, board[0][4], player1, Side.GOTE.get()));
@@ -173,6 +187,7 @@ public class Game {
         board[0][8].setPiece(creator.createPiece(Piece.L, board[0][8], player1, Side.GOTE.get()));
         board[8][0].setPiece(creator.createPiece(Piece.L, board[8][0], player2, Side.SENTE.get()));
         board[8][8].setPiece(creator.createPiece(Piece.L, board[8][8], player2, Side.SENTE.get()));
+
     }
 
     //welcome to utility method land
