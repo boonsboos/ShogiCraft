@@ -11,17 +11,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Command;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.mrsherobrine.ShogiCraft.ShogiCraft;
 import xyz.mrsherobrine.ShogiCraft.commands.CommandHandler;
 import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
 import xyz.mrsherobrine.ShogiCraft.shogi.enums.Piece;
+import xyz.mrsherobrine.ShogiCraft.shogi.enums.PieceType;
 import xyz.mrsherobrine.ShogiCraft.shogi.enums.Side;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
-import xyz.mrsherobrine.ShogiCraft.shogi.enums.PieceType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -48,7 +49,13 @@ public class Game {
         //promotion
         if (sneaking) {
 
-                if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && !from.getPiece().getType().toString().matches("(K|G)") && CommandHandler.turns.get(player.getUniqueId())) {
+
+            //if to != last 3 rows OR if from != last 3 rows, you can't promote
+
+                if (from.getPiece() != null
+                        && from.getPiece().canMove(from, to, player.getUniqueId())
+                        && !from.getPiece().getType().toString().matches("(K|G)")
+                        && canPromote(from, to, board, player)) {
 
                     //check if piece belongs to player who's moving
                     if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
@@ -135,10 +142,10 @@ public class Game {
             }
         } else {
             Bukkit.broadcast(
-                    Component.text(p.getName(), NamedTextColor.AQUA, TextDecoration.BOLD)
-                            .append(
-                                    Component.text(" wins against " + Bukkit.getPlayer(CommandHandler.challenges.get(p.getUniqueId())).getName() + "!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)
-                            )
+                Component.text(p.getName(), NamedTextColor.AQUA, TextDecoration.BOLD)
+                    .append(
+                        Component.text(" wins against " + Bukkit.getPlayer(CommandHandler.challenges.get(p.getUniqueId())).getName() + "!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)
+                    )
             );
         }
 
@@ -258,6 +265,34 @@ public class Game {
         } else {
             return 0;
         }
+    }
+
+    public boolean canPromote(Tile from, Tile to, Tile[][] board, Player player) {
+
+        List<Location> l = new ArrayList<>();
+
+        if (CommandHandler.players.get(player.getUniqueId()) == Side.SENTE) {
+
+            for(int i = 0; i<3; i++) {
+                for (Tile tile : board[i]) {
+                    l.add(tile.getLocation());
+                }
+            }
+
+            return l.contains(from.getLocation()) || l.contains(to.getLocation());
+
+        } else {
+
+            for(int i = 0; i<3; i++) {
+                for (Tile tile : board[i+3]) {
+                    l.add(tile.getLocation());
+                }
+            }
+
+            return l.contains(from.getLocation()) || l.contains(to.getLocation());
+
+        }
+
     }
 
 }
