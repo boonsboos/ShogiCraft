@@ -2,6 +2,7 @@ package xyz.mrsherobrine.ShogiCraft.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -79,6 +80,8 @@ public class CommandHandler implements CommandExecutor {
                                break;
                             } else if (Bukkit.getPlayer(strings[1]) != null && !challenges.containsValue(player.getUniqueId()) && boardList.containsKey(player.getUniqueId())) {
 
+                                player.sendMessage(Component.text("Challenge sent!", NamedTextColor.GREEN));
+
                                 //why this? need to have references both ways and cba to do something more logical
                                 challenges.put(Bukkit.getPlayerUniqueId(strings[1]), player.getUniqueId());
                                 challenges.put(player.getUniqueId(), Bukkit.getPlayerUniqueId(strings[1]));
@@ -153,9 +156,14 @@ public class CommandHandler implements CommandExecutor {
                                 e.remove();
                             }
                         }
+                        player.sendMessage(Component.text("Pieces cleared!", NamedTextColor.GREEN));
                         break;
+                    case "resign":
                     case "surrender":
                         //removes players from every list
+                        Bukkit.getPlayer(challenges.get(player.getUniqueId())).sendMessage(Component.text(player.getName(), NamedTextColor.AQUA, TextDecoration.BOLD)
+                                .append(Component.text(" resigns!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, false)));
+
                         boardList.remove(player.getUniqueId());
                         boardList.remove(challenges.get(player.getUniqueId()));
                         turns.remove(challenges.get(player.getUniqueId()));

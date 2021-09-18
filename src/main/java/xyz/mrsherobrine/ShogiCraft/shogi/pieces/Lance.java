@@ -1,6 +1,9 @@
 package xyz.mrsherobrine.ShogiCraft.shogi.pieces;
 
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.mrsherobrine.ShogiCraft.shogi.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.enums.PieceType;
@@ -47,7 +50,6 @@ public class Lance extends Piece {
                 } else return from.getLocation().getBlockZ() == to.getLocation().getBlockZ() + 1 && from.getLocation().getBlockX() - to.getLocation().getBlockX() == 0;
 
             }
-
 
         } else if (from.getPiece().getEntity().getHeadPose().getY() == Math.PI && from.getLocation() != to.getLocation() && from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(uuid.toString())) {
 

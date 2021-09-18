@@ -92,6 +92,7 @@ public class Game {
 
         //regular movement
         } else {
+
             if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && CommandHandler.turns.get(player.getUniqueId())) {
 
                 if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
@@ -116,7 +117,9 @@ public class Game {
             } else {
                 player.sendMessage(Component.text("Bad move!", NamedTextColor.RED));
             }
+
         }
+
         Listeners.clickedTileList.remove(player.getUniqueId()+"1");
         Listeners.clickedTileList.remove(player.getUniqueId()+"2");
     }
