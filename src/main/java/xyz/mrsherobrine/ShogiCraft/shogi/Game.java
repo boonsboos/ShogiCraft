@@ -173,8 +173,8 @@ public class Game {
         }
 
         //kings
-        board[8][4].setPiece(creator.createPiece(Piece.SK, board[8][4], player2, Side.SENTE.get()));
-        board[0][4].setPiece(creator.createPiece(Piece.GK, board[0][4], player1, Side.GOTE.get()));
+        board[8][4].setPiece(creator.createPiece(Piece.GK, board[8][4], player2, Side.SENTE.get()));
+        board[0][4].setPiece(creator.createPiece(Piece.SK, board[0][4], player1, Side.GOTE.get()));
 
         //rooks
         board[1][1].setPiece(creator.createPiece(Piece.R, board[1][1], player1, Side.GOTE.get()));
@@ -282,19 +282,17 @@ public class Game {
                 }
             }
 
-            return l.contains(from.getLocation()) || l.contains(to.getLocation());
-
         } else {
 
             for(int i = 0; i<3; i++) {
-                for (Tile tile : board[i+3]) {
+                for (Tile tile : board[i+6]) {
                     l.add(tile.getLocation());
                 }
             }
 
-            return l.contains(from.getLocation()) || l.contains(to.getLocation());
-
         }
+
+        return l.contains(from.getLocation()) || l.contains(to.getLocation());
 
     }
 

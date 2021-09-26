@@ -12,6 +12,15 @@ import java.util.UUID;
 public class GameChallenge {
 
     public void challengeSend(String challenger, String challengee) {
+
+        Bukkit.getPlayer(challenger).sendMessage(Component.text("Challenge sent to ", NamedTextColor.GREEN)
+            .append(
+                Component.text(challengee, NamedTextColor.AQUA, TextDecoration.BOLD)
+            ).append(
+                Component.text("!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)
+            )
+        );
+
         Bukkit.getPlayer(challengee).sendMessage(
             Component.text(challenger, NamedTextColor.AQUA, TextDecoration.BOLD)
             .append(
@@ -44,6 +53,16 @@ public class GameChallenge {
     }
 
     public void challengeDeny(String challengee, UUID challenger) {
+
+        Bukkit.getPlayer(challengee).sendMessage(
+            Component.text("You have denied", NamedTextColor.RED)
+                .append(
+                    Component.text(Bukkit.getPlayer(challenger).getName(), NamedTextColor.AQUA, TextDecoration.BOLD)
+                )
+                .append(
+                    Component.text("'s challenge.", NamedTextColor.RED).decoration(TextDecoration.BOLD, false)
+                )
+        );
 
         Bukkit.getPlayer(challenger).sendMessage(
             Component.text(challengee, NamedTextColor.AQUA).decorate(TextDecoration.BOLD)
