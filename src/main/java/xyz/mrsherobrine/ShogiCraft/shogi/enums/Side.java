@@ -2,8 +2,8 @@ package xyz.mrsherobrine.ShogiCraft.shogi.enums;
 
 public enum Side {
 
-    GOTE(0),
-    SENTE(180);
+    GOTE(180),
+    SENTE(0);
 
     private final int sideYaw;
 

@@ -164,45 +164,45 @@ public class Game {
 
         //pawns
         for (int x = 0; x < 9; x++) {
-            board[2][x].setPiece(creator.createPiece(Piece.P, board[2][x], player1, Side.GOTE.get()));
-            board[6][x].setPiece(creator.createPiece(Piece.P, board[6][x], player2, Side.SENTE.get()));
+            board[2][x].setPiece(creator.createPiece(Piece.P, board[2][x], player1, Side.SENTE.get()));
+            board[6][x].setPiece(creator.createPiece(Piece.P, board[6][x], player2, Side.GOTE.get()));
         }
 
         //kings
-        board[8][4].setPiece(creator.createPiece(Piece.GK, board[8][4], player2, Side.SENTE.get()));
-        board[0][4].setPiece(creator.createPiece(Piece.SK, board[0][4], player1, Side.GOTE.get()));
+        board[8][4].setPiece(creator.createPiece(Piece.GK, board[8][4], player2, Side.GOTE.get()));
+        board[0][4].setPiece(creator.createPiece(Piece.SK, board[0][4], player1, Side.SENTE.get()));
 
         //rooks
-        board[1][1].setPiece(creator.createPiece(Piece.R, board[1][1], player1, Side.GOTE.get()));
-        board[7][7].setPiece(creator.createPiece(Piece.R, board[7][7], player2, Side.SENTE.get()));
+        board[1][1].setPiece(creator.createPiece(Piece.R, board[1][1], player1, Side.SENTE.get()));
+        board[7][7].setPiece(creator.createPiece(Piece.R, board[7][7], player2, Side.GOTE.get()));
 
         //bishops
-        board[7][1].setPiece(creator.createPiece(Piece.B, board[7][1], player2, Side.SENTE.get()));
-        board[1][7].setPiece(creator.createPiece(Piece.B, board[1][7], player1, Side.GOTE.get()));
+        board[7][1].setPiece(creator.createPiece(Piece.B, board[7][1], player2, Side.GOTE.get()));
+        board[1][7].setPiece(creator.createPiece(Piece.B, board[1][7], player1, Side.SENTE.get()));
 
         //silver
-        board[0][2].setPiece(creator.createPiece(Piece.S, board[0][2], player1, Side.GOTE.get()));
-        board[0][6].setPiece(creator.createPiece(Piece.S, board[0][6], player1, Side.GOTE.get()));
-        board[8][2].setPiece(creator.createPiece(Piece.S, board[8][2], player2, Side.SENTE.get()));
-        board[8][6].setPiece(creator.createPiece(Piece.S, board[8][6], player2, Side.SENTE.get()));
+        board[0][2].setPiece(creator.createPiece(Piece.S, board[0][2], player1, Side.SENTE.get()));
+        board[0][6].setPiece(creator.createPiece(Piece.S, board[0][6], player1, Side.SENTE.get()));
+        board[8][2].setPiece(creator.createPiece(Piece.S, board[8][2], player2, Side.GOTE.get()));
+        board[8][6].setPiece(creator.createPiece(Piece.S, board[8][6], player2, Side.GOTE.get()));
 
         //gold
-        board[0][3].setPiece(creator.createPiece(Piece.G, board[0][3], player1, Side.GOTE.get()));
-        board[0][5].setPiece(creator.createPiece(Piece.G, board[0][5], player1, Side.GOTE.get()));
-        board[8][3].setPiece(creator.createPiece(Piece.G, board[8][3], player2, Side.SENTE.get()));
-        board[8][5].setPiece(creator.createPiece(Piece.G, board[8][5], player2, Side.SENTE.get()));
+        board[0][3].setPiece(creator.createPiece(Piece.G, board[0][3], player1, Side.SENTE.get()));
+        board[0][5].setPiece(creator.createPiece(Piece.G, board[0][5], player1, Side.SENTE.get()));
+        board[8][3].setPiece(creator.createPiece(Piece.G, board[8][3], player2, Side.GOTE.get()));
+        board[8][5].setPiece(creator.createPiece(Piece.G, board[8][5], player2, Side.GOTE.get()));
 
         //knight
-        board[0][1].setPiece(creator.createPiece(Piece.N, board[0][1], player1, Side.GOTE.get()));
-        board[0][7].setPiece(creator.createPiece(Piece.N, board[0][7], player1, Side.GOTE.get()));
-        board[8][1].setPiece(creator.createPiece(Piece.N, board[8][1], player2, Side.SENTE.get()));
-        board[8][7].setPiece(creator.createPiece(Piece.N, board[8][7], player2, Side.SENTE.get()));
+        board[0][1].setPiece(creator.createPiece(Piece.N, board[0][1], player1, Side.SENTE.get()));
+        board[0][7].setPiece(creator.createPiece(Piece.N, board[0][7], player1, Side.SENTE.get()));
+        board[8][1].setPiece(creator.createPiece(Piece.N, board[8][1], player2, Side.GOTE.get()));
+        board[8][7].setPiece(creator.createPiece(Piece.N, board[8][7], player2, Side.GOTE.get()));
 
         //lance
-        board[0][0].setPiece(creator.createPiece(Piece.L, board[0][0], player1, Side.GOTE.get()));
-        board[0][8].setPiece(creator.createPiece(Piece.L, board[0][8], player1, Side.GOTE.get()));
-        board[8][0].setPiece(creator.createPiece(Piece.L, board[8][0], player2, Side.SENTE.get()));
-        board[8][8].setPiece(creator.createPiece(Piece.L, board[8][8], player2, Side.SENTE.get()));
+        board[0][0].setPiece(creator.createPiece(Piece.L, board[0][0], player1, Side.SENTE.get()));
+        board[0][8].setPiece(creator.createPiece(Piece.L, board[0][8], player1, Side.SENTE.get()));
+        board[8][0].setPiece(creator.createPiece(Piece.L, board[8][0], player2, Side.GOTE.get()));
+        board[8][8].setPiece(creator.createPiece(Piece.L, board[8][8], player2, Side.GOTE.get()));
 
     }
 
@@ -270,7 +270,7 @@ public class Game {
 
         List<Location> l = new ArrayList<>();
 
-        if (CommandHandler.players.get(player.getUniqueId()) == Side.GOTE) {
+        if (CommandHandler.players.get(player.getUniqueId()) == Side.SENTE) {
 
             for(int i = 0; i<3; i++) {
                 for (Tile tile : board[i]) {

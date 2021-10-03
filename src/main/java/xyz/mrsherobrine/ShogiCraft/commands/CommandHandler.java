@@ -85,8 +85,6 @@ public class CommandHandler implements CommandExecutor {
                                break;
                             } else if (Bukkit.getPlayer(strings[1]) != null && !challenges.containsValue(player.getUniqueId()) && boardList.containsKey(player.getUniqueId())) {
 
-                                player.sendMessage(Component.text("Challenge sent!", NamedTextColor.GREEN));
-
                                 //why this? need to have references both ways and cba to do something more logical
                                 challenges.put(Bukkit.getPlayerUniqueId(strings[1]), player.getUniqueId());
                                 challenges.put(player.getUniqueId(), Bukkit.getPlayerUniqueId(strings[1]));
@@ -144,7 +142,9 @@ public class CommandHandler implements CommandExecutor {
                             //denying logic
                             if (strings[1].matches("(deny)") && challenges.containsKey(player.getUniqueId())) {
                                 challenge.challengeDeny(player.getName(), challenges.get(player.getUniqueId()));
+                                challenges.remove(challenges.get(player.getUniqueId()));
                                 challenges.remove(player.getUniqueId());
+
                                 break;
                             } else if (strings[1].contains("deny") && !challenges.containsKey(player.getUniqueId())) {
                                 player.sendMessage(Component.text("You have no challenges!", NamedTextColor.YELLOW));
@@ -193,10 +193,6 @@ public class CommandHandler implements CommandExecutor {
             commandSender.sendMessage("Wait a minute, you're not a player!");
             return true;
         }
-    }
-
-    public Map<UUID, Board> getBoardList() {
-        return boardList;
     }
 
 }
