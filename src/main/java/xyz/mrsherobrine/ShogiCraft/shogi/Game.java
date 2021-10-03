@@ -46,9 +46,6 @@ public class Game {
         //promotion
         if (sneaking) {
 
-
-            //if to != last 3 rows OR if from != last 3 rows, you can't promote
-
                 if (from.getPiece() != null
                         && from.getPiece().canMove(from, to, player.getUniqueId())
                         && !from.getPiece().getType().toString().matches("(K|G)")

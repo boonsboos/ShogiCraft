@@ -2,20 +2,23 @@ package xyz.mrsherobrine.ShogiCraft.listeners;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.plugin.java.JavaPlugin;
 import xyz.mrsherobrine.ShogiCraft.ShogiCraft;
 import xyz.mrsherobrine.ShogiCraft.commands.CommandHandler;
 import xyz.mrsherobrine.ShogiCraft.shogi.Game;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class Listeners implements Listener {
@@ -35,6 +38,8 @@ public class Listeners implements Listener {
         this.game = new Game();
     }
 
+    private BossBar pieceSelectBar = BossBar.bossBar(Component.text("You have selected a "), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
+    private BossBar emptySelectBar = BossBar.bossBar(Component.text("You have selected an empty tile!"), 0, BossBar.Color.RED, BossBar.Overlay.PROGRESS);
 
     public static final Map<String, Tile> clickedTileList = new HashMap<>();
 
@@ -68,9 +73,9 @@ public class Listeners implements Listener {
                         clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()));
 
                         if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                            event.getPlayer().showBossBar(BossBar.bossBar(Component.text("You have selected a ").append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType())), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS));
+                            event.getPlayer().showBossBar(pieceSelectBar.name(pieceSelectBar.name().append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))));
                         } else {
-                            event.getPlayer().showBossBar(BossBar.bossBar(Component.text("You have selected an empty tile!"), 0, BossBar.Color.RED, BossBar.Overlay.PROGRESS));
+                            event.getPlayer().showBossBar(emptySelectBar);
                         }
 
                     }
@@ -79,34 +84,42 @@ public class Listeners implements Listener {
                     clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()));
 
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                        event.getPlayer().hideBossBar(BossBar.bossBar(Component.text("You have selected a ").append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType())), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS));
+                        event.getPlayer().hideBossBar(pieceSelectBar);
+                        //yes, this is ew.
+                        pieceSelectBar.name(Component.text("You have selected a "));
                         game.move(event.getPlayer(), false, commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard());
                     } else {
-                        event.getPlayer().hideBossBar(BossBar.bossBar(Component.text("You have selected an empty tile!"), 0, BossBar.Color.RED, BossBar.Overlay.PROGRESS));
+                        event.getPlayer().hideBossBar(emptySelectBar);
+                        clickedTileList.remove(event.getPlayer().getUniqueId()+"1");
+                        clickedTileList.remove(event.getPlayer().getUniqueId()+"2");
                     }
 
                 }
 
             //if a player IS sneaking, run the move for promotion. this could be cleaner but idk how to so this is how we're doing it.
 
+            //.append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))
             } else {
                 if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList(event.getPlayer().getUniqueId()+"1")) {
 
                     clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()));
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                        event.getPlayer().showBossBar(BossBar.bossBar(Component.text("You have selected a ").append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType())), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS));
+                        event.getPlayer().showBossBar(pieceSelectBar.name(pieceSelectBar.name().append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))));
                     } else {
-                        event.getPlayer().showBossBar(BossBar.bossBar(Component.text("You have selected an empty tile!"), 0, BossBar.Color.RED, BossBar.Overlay.PROGRESS));
+                        event.getPlayer().showBossBar(emptySelectBar);
                     }
                 } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()) != null) {
 
                     clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard()));
 
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                        event.getPlayer().hideBossBar(BossBar.bossBar(Component.text("You have selected a ").append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType())), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS));
+                        event.getPlayer().hideBossBar(pieceSelectBar);
+                        pieceSelectBar.name(Component.text("You have selected a "));
                         game.move(event.getPlayer(), true, commandHandler.getBoardList().get(event.getPlayer().getUniqueId()).getBoard());
                     } else {
-                        event.getPlayer().hideBossBar(BossBar.bossBar(Component.text("You have selected an empty tile!"), 0, BossBar.Color.RED, BossBar.Overlay.PROGRESS));
+                        event.getPlayer().hideBossBar(emptySelectBar);
+                        clickedTileList.remove(event.getPlayer().getUniqueId()+"1");
+                        clickedTileList.remove(event.getPlayer().getUniqueId()+"2");
                     }
 
                 }
