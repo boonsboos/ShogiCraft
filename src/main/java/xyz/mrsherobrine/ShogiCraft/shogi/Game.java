@@ -35,8 +35,6 @@ public class Game {
 
     public void move(Player player, boolean sneaking, Tile[][] board) {
 
-        logger.info("game move pre process");
-
         Map<String, Tile> tiles = Listeners.clickedTileList;
         Tile from = tiles.get(player.getUniqueId()+"1");
         Tile to = tiles.get(player.getUniqueId()+"2");
