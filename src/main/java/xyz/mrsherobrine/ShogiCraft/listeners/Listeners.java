@@ -55,7 +55,7 @@ public class Listeners implements Listener {
             //if a player is not sneaking, run normal moves or drops
             if (!event.getPlayer().isSneaking()) {
                 if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList(event.getPlayer().getUniqueId()+"1")) {
-                    if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER && customModelDataInfo.contains(event.getPlayer().getActiveItem().getItemMeta().getCustomModelData())) {
+                    if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER && customModelDataInfo.contains(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getCustomModelData())) {
 
                         game.drop(
                                 checker.getClickedTileWithinBoard(
@@ -65,8 +65,6 @@ public class Listeners implements Listener {
                                 event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getCustomModelData(),
                                 event.getPlayer().getUniqueId()
                         );
-
-                        event.getPlayer().getInventory().getItemInMainHand().subtract();
 
                     } else {
 

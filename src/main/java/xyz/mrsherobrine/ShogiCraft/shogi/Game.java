@@ -52,10 +52,10 @@ public class Game {
                         && canPromote(from, to, board, player)) {
 
                     //check if piece belongs to player who's moving
-                    if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
+                    /*if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
                         player.sendMessage(Component.text("You can't take your own pieces!", NamedTextColor.RED));
                         return;
-                    }
+                    }*/
 
                     if (to.getPiece() != null) {
                         capture(to.getPiece().getType(), player.getUniqueId());
@@ -91,10 +91,10 @@ public class Game {
                     && from.getPiece().canMove(from, to, player.getUniqueId())
                     && CommandHandler.turns.get(player.getUniqueId())) {
 
-                if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
+                /*if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
                     player.sendMessage(Component.text("You can't take your own pieces!", NamedTextColor.RED));
                     return;
-                }
+                }*/
 
                 if (to.getPiece() != null) {
                     capture(to.getPiece().getType(), player.getUniqueId());
@@ -146,14 +146,29 @@ public class Game {
                         Component.text(" wins against " + Bukkit.getPlayer(CommandHandler.challenges.get(p.getUniqueId())).getName() + "!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)
                     ), Server.BROADCAST_CHANNEL_USERS
             );
+
+            p.sendMessage(Component.text("Boards have been cleared!"));
+
+            CommandHandler.boardList.remove(uuid);
+            CommandHandler.boardList.remove(CommandHandler.challenges.get(uuid));
+            CommandHandler.turns.remove(CommandHandler.challenges.get(uuid));
+            CommandHandler.turns.remove(uuid);
+            CommandHandler.players.remove(uuid);
+            CommandHandler.players.remove(CommandHandler.challenges.get(uuid));
+            CommandHandler.challenges.remove(CommandHandler.challenges.get(uuid));
+            CommandHandler.challenges.remove(uuid);
         }
 
     }
 
     public void drop(Tile destination, int customModelData, UUID uuid) {
 
-        if (destination.getPiece() != null) {
+        CommandHandler.turns.replace(uuid, false);
+        CommandHandler.turns.replace(CommandHandler.challenges.get(uuid), true);
+
+        if (destination.getPiece() == null) {
             destination.setPiece(creator.createPiece(getTypeFromTexture(customModelData), destination, uuid, CommandHandler.players.get(uuid).get()));
+            Bukkit.getPlayer(uuid).getInventory().getItemInMainHand().subtract();
         } else {
             Bukkit.getPlayer(uuid).sendMessage(Component.text("Can't drop that there!", NamedTextColor.RED));
         }
@@ -270,7 +285,7 @@ public class Game {
 
         List<Location> l = new ArrayList<>();
 
-        if (CommandHandler.players.get(player.getUniqueId()) == Side.SENTE) {
+        if (CommandHandler.players.get(player.getUniqueId()) == Side.GOTE) {
 
             for(int i = 0; i<3; i++) {
                 for (Tile tile : board[i]) {
