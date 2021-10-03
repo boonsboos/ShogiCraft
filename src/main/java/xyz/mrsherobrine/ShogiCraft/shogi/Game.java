@@ -3,15 +3,13 @@ package xyz.mrsherobrine.ShogiCraft.shogi;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginLogger;
 import xyz.mrsherobrine.ShogiCraft.ShogiCraft;
 import xyz.mrsherobrine.ShogiCraft.commands.CommandHandler;
 import xyz.mrsherobrine.ShogiCraft.listeners.Listeners;
@@ -19,24 +17,25 @@ import xyz.mrsherobrine.ShogiCraft.shogi.enums.Piece;
 import xyz.mrsherobrine.ShogiCraft.shogi.enums.PieceType;
 import xyz.mrsherobrine.ShogiCraft.shogi.enums.Side;
 import xyz.mrsherobrine.ShogiCraft.utils.ArmorStandCreator;
-import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class Game {
 
     private ArmorStandCreator creator;
-    private LocationChecker checker;
+    private final Logger logger = ShogiCraft.getPlugin(ShogiCraft.class).getLogger();
 
     public Game() {
-        this.checker = new LocationChecker();
         this.creator = new ArmorStandCreator();
     }
 
     public void move(Player player, boolean sneaking, Tile[][] board) {
+
+        logger.info("game move pre process");
 
         Map<String, Tile> tiles = Listeners.clickedTileList;
         Tile from = tiles.get(player.getUniqueId()+"1");
@@ -93,7 +92,9 @@ public class Game {
         //regular movement
         } else {
 
-            if (from.getPiece() != null && from.getPiece().canMove(from, to, player.getUniqueId()) && CommandHandler.turns.get(player.getUniqueId())) {
+            if (from.getPiece() != null
+                    && from.getPiece().canMove(from, to, player.getUniqueId())
+                    && CommandHandler.turns.get(player.getUniqueId())) {
 
                 if (to.getPiece() != null && to.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING).equals(from.getPiece().getEntity().getPersistentDataContainer().get(ArmorStandCreator.ownerKey, PersistentDataType.STRING))) {
                     player.sendMessage(Component.text("You can't take your own pieces!", NamedTextColor.RED));
@@ -148,7 +149,7 @@ public class Game {
                 Component.text(p.getName(), NamedTextColor.AQUA, TextDecoration.BOLD)
                     .append(
                         Component.text(" wins against " + Bukkit.getPlayer(CommandHandler.challenges.get(p.getUniqueId())).getName() + "!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)
-                    )
+                    ), Server.BROADCAST_CHANNEL_USERS
             );
         }
 
@@ -274,7 +275,7 @@ public class Game {
 
         List<Location> l = new ArrayList<>();
 
-        if (CommandHandler.players.get(player.getUniqueId()) == Side.SENTE) {
+        if (CommandHandler.players.get(player.getUniqueId()) == Side.GOTE) {
 
             for(int i = 0; i<3; i++) {
                 for (Tile tile : board[i]) {

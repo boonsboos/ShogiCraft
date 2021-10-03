@@ -48,7 +48,6 @@ public class CommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player player) {
-            logger.info(Arrays.toString(strings));
             if (strings.length != 0) {
 
                 switch (strings[0].toLowerCase()) {
@@ -60,7 +59,13 @@ public class CommandHandler implements CommandExecutor {
                         if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
 
                             boardList.put(player.getUniqueId(), new Board(player.getUniqueId(), player.getLocation()));
-                            player.sendMessage("New board has been created at " + Arrays.toString(locCheck.getBounds()));
+
+                            int[] bounds = locCheck.getBounds();
+                            player.sendMessage(Component.text("New board has been created between ", NamedTextColor.GREEN)
+                                    .append(
+                                            Component.text(bounds[0]+","+bounds[1]+" and "+bounds[2]+","+bounds[3], NamedTextColor.WHITE, TextDecoration.BOLD)
+                                    )
+                            );
 
                         } else if (boardList.containsKey(player.getUniqueId())) {
                             player.sendMessage(Component.text("You have a board! Run /shogi remove if you want to get rid of it.", NamedTextColor.YELLOW));
@@ -163,6 +168,8 @@ public class CommandHandler implements CommandExecutor {
                         //removes players from every list
                         Bukkit.getPlayer(challenges.get(player.getUniqueId())).sendMessage(Component.text(player.getName(), NamedTextColor.AQUA, TextDecoration.BOLD)
                                 .append(Component.text(" resigns!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, false)));
+
+                        player.sendMessage(Component.text("Boards have been cleared!"));
 
                         boardList.remove(player.getUniqueId());
                         boardList.remove(challenges.get(player.getUniqueId()));
