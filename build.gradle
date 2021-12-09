@@ -18,3 +18,7 @@ shadowJar {
     archiveBaseName.set('ShogiCraft')
     archiveClassifier.set("")
 }
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}

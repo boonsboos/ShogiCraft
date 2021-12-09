@@ -15,17 +15,12 @@ import xyz.mrsherobrine.ShogiCraft.shogi.Game;
 import xyz.mrsherobrine.ShogiCraft.shogi.Tile;
 import xyz.mrsherobrine.ShogiCraft.utils.LocationChecker;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Listeners implements Listener {
 
-    private LocationChecker checker;
     private CommandHandler commandHandler;
-    private Game game;
     private final Logger logger = ShogiCraft.getPlugin(ShogiCraft.class).getLogger();
 
     private final List<Integer> customModelDataInfo = Arrays.asList(
@@ -33,9 +28,7 @@ public class Listeners implements Listener {
     );
 
     public Listeners() {
-        this.checker = new LocationChecker();
         this.commandHandler = new CommandHandler(ShogiCraft.getPlugin(ShogiCraft.class));
-        this.game = new Game();
     }
 
     private BossBar pieceSelectBar = BossBar.bossBar(Component.text("You have selected a "), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
@@ -54,38 +47,38 @@ public class Listeners implements Listener {
 
             //if a player is not sneaking, run normal moves or drops
             if (!event.getPlayer().isSneaking()) {
-                if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList(event.getPlayer().getUniqueId()+"1")) {
+                if (LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList(event.getPlayer().getUniqueId()+"1")) {
                     if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER && customModelDataInfo.contains(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getCustomModelData())) {
 
-                        game.drop(
-                                checker.getClickedTileWithinBoard(
+                        Game.drop(
+                                Objects.requireNonNull(LocationChecker.getClickedTileWithinBoard(
                                         event.getClickedBlock().getLocation(),
-                                         CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()
-                                ),
+                                        CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()
+                                )),
                                 event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getCustomModelData(),
                                 event.getPlayer().getUniqueId()
                         );
 
                     } else {
 
-                        clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
+                        clickedTileList.put(event.getPlayer().getUniqueId() + "1", LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
 
                         if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                            event.getPlayer().showBossBar(pieceSelectBar.name(pieceSelectBar.name().append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))));
+                            event.getPlayer().showBossBar(pieceSelectBar.name(pieceSelectBar.name().append(Game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))));
                         } else {
                             event.getPlayer().showBossBar(emptySelectBar);
                         }
 
                     }
-                } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null) {
+                } else if (LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null) {
 
-                    clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
+                    clickedTileList.put(event.getPlayer().getUniqueId() + "2", LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
 
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
                         event.getPlayer().hideBossBar(pieceSelectBar);
                         //yes, this is ew.
                         pieceSelectBar.name(Component.text("You have selected a "));
-                        game.move(event.getPlayer(), false,  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard());
+                        Game.move(event.getPlayer(), false,  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard());
                     } else {
                         event.getPlayer().hideBossBar(emptySelectBar);
                         clickedTileList.remove(event.getPlayer().getUniqueId()+"1");
@@ -98,22 +91,22 @@ public class Listeners implements Listener {
 
             //.append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))
             } else {
-                if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList(event.getPlayer().getUniqueId()+"1")) {
+                if (LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(), CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null && !isInList(event.getPlayer().getUniqueId()+"1")) {
 
-                    clickedTileList.put(event.getPlayer().getUniqueId() + "1", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
+                    clickedTileList.put(event.getPlayer().getUniqueId() + "1", LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                        event.getPlayer().showBossBar(pieceSelectBar.name(pieceSelectBar.name().append(game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))));
+                        event.getPlayer().showBossBar(pieceSelectBar.name(pieceSelectBar.name().append(Game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))));
                     } else {
                         event.getPlayer().showBossBar(emptySelectBar);
                     }
-                } else if (checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null) {
+                } else if (LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()) != null) {
 
-                    clickedTileList.put(event.getPlayer().getUniqueId() + "2", checker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
+                    clickedTileList.put(event.getPlayer().getUniqueId() + "2", LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
 
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
                         event.getPlayer().hideBossBar(pieceSelectBar);
                         pieceSelectBar.name(Component.text("You have selected a "));
-                        game.move(event.getPlayer(), true,  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard());
+                        Game.move(event.getPlayer(), true,  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard());
                     } else {
                         event.getPlayer().hideBossBar(emptySelectBar);
                         clickedTileList.remove(event.getPlayer().getUniqueId()+"1");

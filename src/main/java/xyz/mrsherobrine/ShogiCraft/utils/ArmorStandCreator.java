@@ -19,13 +19,9 @@ import java.util.UUID;
 
 public class ArmorStandCreator {
 
-    public static NamespacedKey ownerKey;
+    public static NamespacedKey ownerKey = new NamespacedKey(ShogiCraft.getPlugin(ShogiCraft.class), "PieceOwner");
 
-    public ArmorStandCreator() {
-        ownerKey = new NamespacedKey(ShogiCraft.getPlugin(ShogiCraft.class), "PieceOwner");
-    }
-
-    public xyz.mrsherobrine.ShogiCraft.shogi.Piece createPiece(Piece type, Tile tile, UUID uuid, int yaw) {
+    public static xyz.mrsherobrine.ShogiCraft.shogi.Piece createPiece(Piece type, Tile tile, UUID uuid, int yaw) {
 
         xyz.mrsherobrine.ShogiCraft.shogi.Piece piece = null;
 
@@ -89,7 +85,7 @@ public class ArmorStandCreator {
                 piece = new King(uuid, armorStand);
                 meta.setCustomModelData(15);
             }
-            default -> throw new IllegalStateException("Unexpected value: " + type);
+            default -> throw new IllegalStateException("Unexpected value while creating new Piece: " + type);
         }
 
         paper.setItemMeta(meta);
