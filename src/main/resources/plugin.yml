@@ -1,7 +1,7 @@
 main: 'xyz.mrsherobrine.ShogiCraft.ShogiCraft'
 name: 'ShogiCraft'
 description: "Allows you to play traditional Japanese shogi in Minecraft!"
-version: '1.0.1'
+version: '1.0.2'
 author: 'Mrs_Herobrine_'
 api-version: '1.18'
 commands:
