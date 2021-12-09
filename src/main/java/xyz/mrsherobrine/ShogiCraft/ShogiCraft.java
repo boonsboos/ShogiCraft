@@ -10,7 +10,7 @@ public class ShogiCraft extends JavaPlugin {
   public void onEnable() {
     
     getServer().getPluginManager().registerEvents(new Listeners() ,this);
-    getCommand("shogi").setExecutor(new CommandHandler(this));
+    getCommand("shogi").setExecutor(new CommandHandler());
     
   }
 

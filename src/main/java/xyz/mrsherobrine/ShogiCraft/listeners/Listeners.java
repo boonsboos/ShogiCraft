@@ -20,16 +20,11 @@ import java.util.logging.Logger;
 
 public class Listeners implements Listener {
 
-    private CommandHandler commandHandler;
     private final Logger logger = ShogiCraft.getPlugin(ShogiCraft.class).getLogger();
 
     private final List<Integer> customModelDataInfo = Arrays.asList(
         1, 2, 4, 8, 9, 10, 12
     );
-
-    public Listeners() {
-        this.commandHandler = new CommandHandler(ShogiCraft.getPlugin(ShogiCraft.class));
-    }
 
     private BossBar pieceSelectBar = BossBar.bossBar(Component.text("You have selected a "), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
     private BossBar emptySelectBar = BossBar.bossBar(Component.text("You have selected an empty tile!"), 0, BossBar.Color.RED, BossBar.Overlay.PROGRESS);

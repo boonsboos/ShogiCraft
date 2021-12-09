@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import xyz.mrsherobrine.ShogiCraft.ShogiCraft;
 import xyz.mrsherobrine.ShogiCraft.shogi.Board;
 import xyz.mrsherobrine.ShogiCraft.shogi.Game;
 import xyz.mrsherobrine.ShogiCraft.shogi.challenge.GameChallenge;
@@ -27,10 +28,7 @@ import java.util.logging.Logger;
 public class CommandHandler implements CommandExecutor {
 
     private final Logger logger;
-    private final LocationChecker locCheck;
     private final GameChallenge challenge;
-    private final Game game;
-
     //public static NamespacedKey turn = null;
 
     public static final Map<UUID, Board> boardList = new HashMap<>();
@@ -38,10 +36,8 @@ public class CommandHandler implements CommandExecutor {
     public static final Map<UUID, Side> players = new HashMap<>();
     public static final Map<UUID, Boolean> turns = new HashMap<>();
 
-    public CommandHandler(JavaPlugin plugin) {
-        this.logger = plugin.getLogger();
-        this.locCheck = new LocationChecker();
-        this.game = new Game();
+    public CommandHandler() {
+        this.logger = ShogiCraft.getPlugin(ShogiCraft.class).getLogger();
         this.challenge = new GameChallenge();
     }
 
@@ -56,11 +52,11 @@ public class CommandHandler implements CommandExecutor {
                         break;
                     case "create":
 
-                        if (locCheck.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
+                        if (LocationChecker.checkLocation(player.getLocation()) && !boardList.containsKey(player.getUniqueId())) {
 
                             boardList.put(player.getUniqueId(), new Board(player.getUniqueId(), player.getLocation()));
 
-                            int[] bounds = locCheck.getBounds();
+                            int[] bounds = LocationChecker.getBounds();
                             player.sendMessage(Component.text("New board has been created between ", NamedTextColor.GREEN)
                                     .append(
                                             Component.text(bounds[0]+","+bounds[1]+" and "+bounds[2]+","+bounds[3], NamedTextColor.WHITE, TextDecoration.BOLD)
@@ -127,7 +123,7 @@ public class CommandHandler implements CommandExecutor {
                                 }
 
                                 if (challenges.containsValue(player.getUniqueId()) && boardList.containsKey(player.getUniqueId())) {
-                                    game.setupGame(boardList.get(player.getUniqueId()).getBoard(), challenges.get(player.getUniqueId()), player.getUniqueId());
+                                    Game.setupGame(boardList.get(player.getUniqueId()).getBoard(), challenges.get(player.getUniqueId()), player.getUniqueId());
                                 } else {
                                     player.sendMessage(Component.text("Hey, you don't have a board yet!", NamedTextColor.YELLOW));
                                 }
