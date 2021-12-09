@@ -3,7 +3,7 @@ name: 'ShogiCraft'
 description: "Allows you to play traditional Japanese shogi in Minecraft!"
 version: '1.0.1'
 author: 'Mrs_Herobrine_'
-api-version: '1.17'
+api-version: '1.18'
 commands:
   shogi:
     description: 'Main command that handles everything'

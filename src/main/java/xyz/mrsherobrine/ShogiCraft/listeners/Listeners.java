@@ -31,6 +31,7 @@ public class Listeners implements Listener {
 
     public static final Map<String, Tile> clickedTileList = new HashMap<>();
 
+    private static final Map<UUID, BossBar> bossBarTracker = new HashMap<>();
     private boolean isInList(String uuid) {
         return clickedTileList.containsKey(uuid);
     }
@@ -59,7 +60,15 @@ public class Listeners implements Listener {
                         clickedTileList.put(event.getPlayer().getUniqueId() + "1", LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
 
                         if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                            event.getPlayer().showBossBar(pieceSelectBar.name(pieceSelectBar.name().append(Game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))));
+                            bossBarTracker.put(
+                                    event.getPlayer().getUniqueId(),
+                                    BossBar.bossBar(Component.empty(), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS)
+                            );
+                            bossBarTracker.replace(
+                                    event.getPlayer().getUniqueId(),
+                                    BossBar.bossBar(Game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()), 0.0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS)
+                            );
+                            event.getPlayer().showBossBar(bossBarTracker.get(event.getPlayer().getUniqueId()));
                         } else {
                             event.getPlayer().showBossBar(emptySelectBar);
                         }
@@ -70,9 +79,8 @@ public class Listeners implements Listener {
                     clickedTileList.put(event.getPlayer().getUniqueId() + "2", LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
 
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                        event.getPlayer().hideBossBar(pieceSelectBar);
+                        event.getPlayer().hideBossBar(bossBarTracker.get(event.getPlayer().getUniqueId()));
                         //yes, this is ew.
-                        pieceSelectBar.name(Component.text("You have selected a "));
                         Game.move(event.getPlayer(), false,  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard());
                     } else {
                         event.getPlayer().hideBossBar(emptySelectBar);
@@ -90,7 +98,15 @@ public class Listeners implements Listener {
 
                     clickedTileList.put(event.getPlayer().getUniqueId() + "1", LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                        event.getPlayer().showBossBar(pieceSelectBar.name(pieceSelectBar.name().append(Game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()))));
+                        bossBarTracker.put(
+                                event.getPlayer().getUniqueId(),
+                                BossBar.bossBar(Component.empty(), 0, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS)
+                        );
+                        bossBarTracker.replace(
+                                event.getPlayer().getUniqueId(),
+                                BossBar.bossBar(Game.getFullTypeNameAsComponent(clickedTileList.get(event.getPlayer().getUniqueId() + "1").getPiece().getType()), 0.0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS)
+                        );
+                        event.getPlayer().showBossBar(bossBarTracker.get(event.getPlayer().getUniqueId()));
                     } else {
                         event.getPlayer().showBossBar(emptySelectBar);
                     }
@@ -99,8 +115,7 @@ public class Listeners implements Listener {
                     clickedTileList.put(event.getPlayer().getUniqueId() + "2", LocationChecker.getClickedTileWithinBoard(event.getClickedBlock().getLocation(),  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard()));
 
                     if (clickedTileList.get(event.getPlayer().getUniqueId()+"1").getPiece() != null) {
-                        event.getPlayer().hideBossBar(pieceSelectBar);
-                        pieceSelectBar.name(Component.text("You have selected a "));
+                        event.getPlayer().hideBossBar(bossBarTracker.get(event.getPlayer().getUniqueId()));
                         Game.move(event.getPlayer(), true,  CommandHandler.boardList.get(event.getPlayer().getUniqueId()).getBoard());
                     } else {
                         event.getPlayer().hideBossBar(emptySelectBar);
